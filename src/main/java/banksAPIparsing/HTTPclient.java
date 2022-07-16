@@ -40,10 +40,8 @@ public class HTTPclient {
     public static Optional<NBU[]> getNBUData() throws IOException, InterruptedException {
         Optional<NBU[]> result = Optional.empty();
         try {
-            String HTMLBody = sendGETRequest("https://bank.gov.ua/NBU_Exchange/exchange?json");
-            int arrayStart = HTMLBody.indexOf("[");
-            var arrayEnd = HTMLBody.indexOf("]");
-            return Optional.of(GSON.fromJson(HTMLBody.substring(arrayStart, arrayEnd + 1),NBU[].class));
+            String HTMLBody = sendGETRequest("https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?json");
+            return Optional.of(GSON.fromJson(HTMLBody,NBU[].class));
         } catch (RuntimeException e) {
             System.out.println("\033[1;31m" + "Can't get NBU data" + "\033[0m");
             return  result;

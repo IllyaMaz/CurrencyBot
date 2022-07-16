@@ -7,10 +7,9 @@ import lombok.Data;
 @Data
 
 public class NBU {
-    private String startDate;
-    private String TimeSign;
-    private String CurrencyCode;
-    private String CurrencyCodeL;
-    private String Units;
-    private String Amount;
+    private String r030;
+    private String txt;
+    private String rate;
+    private String cc;
+    private String exchangedate;
 }

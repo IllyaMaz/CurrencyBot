@@ -4,6 +4,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class CurrencySetting {
+    enum Currency{
+        USD,
+        EUR,
+        RUB,
+        UAH
+    }
+
     private Currency originalCurrency = Currency.UAH;
     private Map<Long,Currency> targetCurrency = new HashMap<>();
 

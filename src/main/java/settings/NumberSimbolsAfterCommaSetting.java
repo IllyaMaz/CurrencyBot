@@ -4,6 +4,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class NumberSimbolsAfterCommaSetting {
+    enum NumberSimbolsAfterComma {
+        TWO,
+        THREE,
+        FOUR
+    }
+
     private Map<Long,NumberSimbolsAfterComma> simbolsAfterCommaMap = new HashMap<>();
 
     public void setSimbolsAfterComma(long chayId, NumberSimbolsAfterComma numberSimbolsAfterComma){

@@ -18,7 +18,7 @@ public class HTTPclient {
         Optional<Privatbank[]> result = Optional.empty();
         try {
             return Optional.of(GSON.fromJson(
-                    sendGETRequest("https://api.privatbank.ua/p24api/pubinfo?json&exchange&coursid=5"),
+                    sendGETRequest("https://api.privatbank.ua/p24api/pubinfo?json&exchange&coursid=4"),
                     Privatbank[].class));
         } catch (RuntimeException e) {
             return result;

@@ -5,21 +5,32 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 
 public class Main {
     public static void main(String[] args)  {
         try {
+            List<Currency> list = new ArrayList<>();
+
             var coursesPrivat = HTTPclient.getPrivatbankData();
-            coursesPrivat.ifPresent(currencyPair -> Arrays.stream(currencyPair).map(HTTPclient.GSON::toJson).forEach(System.out::println));
+            //coursesPrivat.ifPresent(currencyPair -> Arrays.stream(currencyPair).forEach(System.out::println));
+            coursesPrivat.ifPresent(currencyPair -> list.addAll(Arrays.asList(currencyPair)));
 
             var coursesMono = HTTPclient.getMonobankData();
-            coursesMono.ifPresent(currencyPair -> Arrays.stream(currencyPair).forEach(System.out::println));
+            //coursesMono.ifPresent(currencyPair -> Arrays.stream(currencyPair).forEach(System.out::println));
+            coursesMono.ifPresent(currencyPair -> list.addAll(Arrays.asList(currencyPair)));
 
             var coursesNBU= HTTPclient.getNBUData();
-            coursesNBU.ifPresent(currencyPair -> Arrays.stream(currencyPair).forEach(System.out::println));
+            //coursesNBU.ifPresent(currencyPair -> Arrays.stream(currencyPair).forEach(System.out::println));
+            coursesNBU.ifPresent(currencyPair -> list.addAll(Arrays.asList(currencyPair)));
+
+            list.forEach(x -> System.out.println(x.getBankName()));
+
+
 
 
         } catch (IOException | InterruptedException e) {

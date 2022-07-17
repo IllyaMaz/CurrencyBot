@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Currencies {
-    public static Map<String, Integer> currs = new HashMap<String, Integer>();
+    public static Map<String, Integer> currs = new HashMap<>();
 
     static {
         currs.put("USD",840);
@@ -36,8 +36,29 @@ public class Currencies {
         currs.put("CUP",192);
         currs.put("DJF",262);
         currs.put("DKK",208);
-
-
+        currs.put("DZD",12);
+        currs.put("EGP",818);
+        currs.put("ETB",230);
+        currs.put("GEL",981);
+        currs.put("GHS",936);
+        currs.put("GMD",270);
+        currs.put("GNF",324);
+        currs.put("HKD",344);
+        currs.put("HRK",191);
+        currs.put("HUF",348);
+        currs.put("IDR",360);
+        currs.put("INR",356);
+        currs.put("IQD",368);
+        currs.put("IRR",364);
+        currs.put("ISK",352);
+        currs.put("JOD",400);
+        currs.put("KES",404);
+        currs.put("KGS",417);
+        currs.put("KHR",116);
+        currs.put("KPW",408);
+        currs.put("KRW",410);
+        currs.put("KWD",414);
+        currs.put("KZT",398);
 
         currs.put("GBP",826);
         currs.put("ILS",376);

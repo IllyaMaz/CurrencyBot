@@ -28,7 +28,7 @@ public class Main {
             //coursesNBU.ifPresent(currencyPair -> Arrays.stream(currencyPair).forEach(System.out::println));
             coursesNBU.ifPresent(currencyPair -> list.addAll(Arrays.asList(currencyPair)));
 
-            list.forEach(x -> System.out.println(x.getBankName()));
+            list.forEach(x -> System.out.println(x.getCurrencyCode()));
 
 
 

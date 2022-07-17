@@ -26,10 +26,11 @@ public class Monobank implements Currency{
 
     @Override
     public String getCurrencyCode() {
-        return Currencies.currs
+        var a = Currencies.currs
                 .entrySet().stream()
                 .filter(x -> x.getValue() == Integer.parseInt(currencyCodeA))
-                .findAny().get().getKey();
+                .findAny();
+        return a.isPresent() ? a.get().getKey() : "Code not found";
     }
 
     @Override

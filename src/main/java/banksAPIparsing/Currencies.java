@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Currencies {
-    public static Map<String, Integer> currs = new HashMap<>();
+    public static Map<String, Integer> currs = new HashMap<>(115);
 
     static {
         currs.put("USD",840);
@@ -59,12 +59,48 @@ public class Currencies {
         currs.put("KRW",410);
         currs.put("KWD",414);
         currs.put("KZT",398);
+        currs.put("LAK",418);
+        currs.put("LBP",422);
+        currs.put("LKR",144);
+        currs.put("LYD",434);
+        currs.put("MAD",504);
+        currs.put("MDL",498);
+        currs.put("MGA",969);
+        currs.put("MKD",807);
+        currs.put("MNT",496);
+        currs.put("MUR",480);
+        currs.put("MWK",454);
+        currs.put("MXN",484);
+        currs.put("MYR",458);
+        currs.put("MZN",943);
+        currs.put("NAD",516);
+        currs.put("NGN",566);
+        currs.put("NIO",558);
+        currs.put("NPR",524);
+        currs.put("NZD",554);
+        currs.put("OMR",512);
+        currs.put("PEN",604);
+        currs.put("PHP",608);
+        currs.put("PKR",586);
+        currs.put("PYG",600);
+        currs.put("QAR",634);
+        currs.put("RON",946);
+        currs.put("RSD",941);
+        currs.put("SAR",682);
+        currs.put("SCR",690);
+        currs.put("SDG",938);
+        currs.put("SGD",702);
+        currs.put("SLL",694);
+        currs.put("SOS",706);
+        currs.put("SRD",968);
+        currs.put("SYP",760);
+        currs.put("SZL",748);
 
         currs.put("GBP",826);
         currs.put("ILS",376);
         currs.put("JPY",392);
         currs.put("NOK",578);
-        currs.put("PLZ",0);
+        currs.put("PLZ",985);
         currs.put("SEK",752);
         currs.put("LEK",8);
 

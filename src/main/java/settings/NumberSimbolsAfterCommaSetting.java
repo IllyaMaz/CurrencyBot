@@ -12,8 +12,8 @@ public class NumberSimbolsAfterCommaSetting {
 
     private Map<Long,NumberSimbolsAfterComma> simbolsAfterCommaMap = new HashMap<>();
 
-    public void setSimbolsAfterComma(long chayId, NumberSimbolsAfterComma numberSimbolsAfterComma){
-        simbolsAfterCommaMap.put(chayId,numberSimbolsAfterComma);
+    public void setSimbolsAfterComma(long chatId, NumberSimbolsAfterComma numberSimbolsAfterComma){
+        simbolsAfterCommaMap.put(chatId,numberSimbolsAfterComma);
     }
 
     public NumberSimbolsAfterComma getSimbolsAfterComma(long chatId){

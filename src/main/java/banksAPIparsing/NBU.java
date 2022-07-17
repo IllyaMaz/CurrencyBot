@@ -25,11 +25,11 @@ public class NBU implements Currency{
 
     @Override
     public String getCurrencyCode() {
-        var a = Currencies.currs
+        var entry = Currencies.currs
                 .entrySet().stream()
                 .filter(x -> x.getValue() == Integer.parseInt(r030))
                 .findAny();
-        return a.isPresent() ? a.get().getKey() : "Code not found";
+        return entry.isPresent() ? entry.get().getKey() : "Code not found";
     }
 
     @Override

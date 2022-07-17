@@ -19,7 +19,11 @@ public class Privatbank implements Currency{
 
     @Override
     public int getCurrencyNumber() {
-        return Currencies.currs.get(ccy);
+        try {
+            return Currencies.currs.get(ccy);
+        } catch (NullPointerException e) {
+            return 0;
+        }
     }
 
     @Override

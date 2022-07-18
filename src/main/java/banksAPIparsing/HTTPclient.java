@@ -17,6 +17,14 @@ public class HTTPclient {
     public final static Gson GSON = new Gson().newBuilder().setPrettyPrinting().create();
     private static final List<Currency> allExchangeRates = new ArrayList<>();
 
+/**
+    Использование:
+        1) в вашем коде вызываем метод getAllBanksData() для получения обновления курсов валют.
+        2) вызываем метод getAllExchangeRates() и получаем список, типизированный интерфейсом Currency
+        3) все необходимые методы уже вызываем непосредсвенно через доступные методы или (если нужны специфические)
+           кастуем к типу необходимого класса (Приватбанк, Монобанк, НБУ и тд)
+ */
+
     public static List<Currency> getAllExchangeRates() {
         return allExchangeRates;
     }

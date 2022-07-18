@@ -17,20 +17,20 @@ public class HTTPclient {
     public final static Gson GSON = new Gson().newBuilder().setPrettyPrinting().create();
     private static final List<Currency> ALL_RATES = new ArrayList<>();
 
-/**
-     <B>Использование:</B><br>
-        1) в вашем коде вызываем метод getAllExchangeRates() и получаем список,
-           типизированный интерфейсом Currency, пример: <br><br>
-         <B><I><font color="#e3ff00"> List&#60Currency&#62 list = HTTPclient.getAllExchangeRates();</font></I></B><br><br>
-        2) все необходимые методы уже вызываем непосредсвенно через доступные методы интерфейса Currency<br><br>
- <font color="#e3ff00">getBankName();<br>
-        <i>getCurrencyNumber();</i><br>
-        getCurrencyCode();<br>
-        getBuy();<br>
-        getSell();</font><br><br>
-           или (если нужны специфические)
-           кастуем к типу необходимого класса (Приватбанк,Монобанк,НБУ и тд)
- */
+    /**
+     * <B>Использование:</B><br>
+     * 1) в вашем коде вызываем метод getAllExchangeRates() и получаем список,
+     * типизированный интерфейсом Currency, пример: <br><br>
+     * <B><I><font color="#e3ff00"> List&#60Currency&#62 list = HTTPclient.getAllExchangeRates();</font></I></B><br><br>
+     * 2) все необходимые методы уже вызываем непосредсвенно через доступные методы интерфейса Currency<br><br>
+     * <font color="#e3ff00">getBankName();<br>
+     * <i>getCurrencyNumber();</i><br>
+     * getCurrencyCode();<br>
+     * getBuy();<br>
+     * getSell();</font><br><br>
+     * или (если нужны специфические)
+     * кастуем к типу необходимого класса (Приватбанк,Монобанк,НБУ и тд)
+     */
 
     public static List<Currency> getAllExchangeRates() throws IOException, InterruptedException {
         if (ALL_RATES.isEmpty()) getAllBanksData();
@@ -78,10 +78,10 @@ public class HTTPclient {
         Optional<NBU[]> result = Optional.empty();
         try {
             String HTMLBody = sendGETRequest("https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?json");
-            return Optional.of(GSON.fromJson(HTMLBody,NBU[].class));
+            return Optional.of(GSON.fromJson(HTMLBody, NBU[].class));
         } catch (RuntimeException e) {
             System.out.println("\033[1;31m" + "Can't get NBU data" + "\033[0m");
-            return  result;
+            return result;
         }
     }
 

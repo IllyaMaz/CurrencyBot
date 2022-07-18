@@ -18,9 +18,10 @@ public class HTTPclient {
     private static final List<Currency> ALL_RATES = new ArrayList<>();
 
 /**
-    Использование:
+     <B>Использование:</B><br>
         1) в вашем коде вызываем метод getAllExchangeRates() и получаем список,
            типизированный интерфейсом Currency
+            пример: <B> Listlist = HTTPclient.getAllExchangeRates();</B><br>
         2) все необходимые методы уже вызываем непосредсвенно через доступные методы интерфейса Currency
            или (если нужны специфические)
            кастуем к типу необходимого класса (Приватбанк, Монобанк, НБУ и тд)

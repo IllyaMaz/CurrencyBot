@@ -24,7 +24,7 @@ public class HTTPclient {
          <B><I><font color="#e3ff00"> List&#60Currency&#62 list = HTTPclient.getAllExchangeRates();</font></I></B><br><br>
         2) все необходимые методы уже вызываем непосредсвенно через доступные методы интерфейса Currency<br><br>
  <font color="#e3ff00">getBankName();<br>
-        getCurrencyNumber();<br>
+        <i>getCurrencyNumber();</i><br>
         getCurrencyCode();<br>
         getBuy();<br>
         getSell();</font><br><br>

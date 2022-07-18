@@ -6,11 +6,12 @@ import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.MessageEntity;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
+import settings.DecimalPlaceSetting;
 
 import java.util.Optional;
 
 public class CurrencyGoItBot extends TelegramLongPollingBot {
-
+    DecimalPlaceSetting decimalPlaceSetting = new DecimalPlaceSetting();
     protected CurrencyGoItBot(DefaultBotOptions options) {
         super(options);
     }

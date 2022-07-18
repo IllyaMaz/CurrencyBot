@@ -5,18 +5,18 @@ import java.util.Map;
 
 public class DecimalPlaceSetting {
     public enum DecimalPlace {
-        TWO(2,"#0.00"),
-        THREE(3,"#0.000"),
-        FOUR(4,"#0.0000");
-        private int position;
+        TWO("2","#0.00"),
+        THREE("3","#0.000"),
+        FOUR("4","#0.0000");
+        private String position;
         private String pattern;
 
-        DecimalPlace(int position, String pattern) {
+        DecimalPlace(String position, String pattern) {
             this.position = position;
             this.pattern = pattern;
         }
 
-        public int getPosition() {
+        public String getPosition() {
             return position;
         }
 

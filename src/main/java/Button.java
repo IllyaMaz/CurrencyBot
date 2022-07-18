@@ -6,6 +6,7 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMar
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardButton;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
+import settings.DecimalPlaceSetting;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -72,14 +73,17 @@ public class Button {
 
     static InlineKeyboardMarkup getDigitsButtons() {
         InlineKeyboardMarkup digitsMarkup = new InlineKeyboardMarkup();
+
         InlineKeyboardButton button2 = new InlineKeyboardButton();
-        button2.setText("2");
+        button2.setText(markSavedParameter("2", DecimalPlaceSetting.DecimalPlace.TWO.getPosition()));
         button2.setCallbackData("button2");
+
         InlineKeyboardButton button3 = new InlineKeyboardButton();
-        button3.setText("3");
+        button3.setText(markSavedParameter("2", DecimalPlaceSetting.DecimalPlace.THREE.getPosition()));
         button3.setCallbackData("button3");
+
         InlineKeyboardButton button4 = new InlineKeyboardButton();
-        button4.setText("4");
+        button4.setText(markSavedParameter("2", DecimalPlaceSetting.DecimalPlace.FOUR.getPosition()));
         button4.setCallbackData("button4");
 
         List<InlineKeyboardButton> keyboardButtonsRow1 = new ArrayList<>();
@@ -193,6 +197,12 @@ public class Button {
 
 
         return notificationMarkup;
+    }
+
+    static String markSavedParameter(String saved, String current) {
+        return saved.equals(current)
+                ? "✅" + current
+                : current;
     }
 
 }

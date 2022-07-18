@@ -21,7 +21,7 @@ public class HTTPclient {
      <B>Использование:</B><br>
         1) в вашем коде вызываем метод getAllExchangeRates() и получаем список,
            типизированный интерфейсом Currency, пример: <br><br>
-         <B><I><font color="#e3ff00"> List&#60Currency&#62 list = HTTPclient.getAllRates();</font></I></B><br><br>
+         <B><I><font color="#e3ff00"> List&#60Currency&#62 list = HTTPclient.getAllExchangeRates();</font></I></B><br><br>
         2) все необходимые методы уже вызываем непосредсвенно через доступные методы интерфейса Currency<br><br>
  <font color="#e3ff00">getBankName();<br>
         getCurrencyNumber();<br>
@@ -29,10 +29,10 @@ public class HTTPclient {
         getBuy();<br>
         getSell();</font><br><br>
            или (если нужны специфические)
-           кастуем к типу необходимого класса (Приватбанк, Монобанк, НБУ и тд)
+           кастуем к типу необходимого класса (Приватбанк,Монобанк,НБУ и тд)
  */
 
-    public static List<Currency> getAllRates() throws IOException, InterruptedException {
+    public static List<Currency> getAllExchangeRates() throws IOException, InterruptedException {
         if (ALL_RATES.isEmpty()) getAllBanksData();
         return ALL_RATES;
     }
@@ -45,7 +45,7 @@ public class HTTPclient {
     }
 
     private static <T extends Currency> void addToStorage(Optional<T[]> courses) {
-        courses.ifPresent(currencyPair -> Arrays.stream(currencyPair)
+        courses.ifPresent(currencyArray -> Arrays.stream(currencyArray)
                 .filter(currency -> Currencies.currs.containsKey(currency.getCurrencyCode()))
                 .forEach(ALL_RATES::add));
     }

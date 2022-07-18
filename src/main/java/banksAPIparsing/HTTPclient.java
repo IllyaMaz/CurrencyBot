@@ -31,7 +31,7 @@ public class HTTPclient {
         return allExchangeRates;
     }
 
-    public static void getAllBanksData() throws IOException, InterruptedException {
+    private static void getAllBanksData() throws IOException, InterruptedException {
         var coursesPrivat = getPrivatbankData();
         var coursesMono = getMonobankData();
         var coursesNBU= getNBUData();
@@ -41,7 +41,7 @@ public class HTTPclient {
         coursesNBU.ifPresent(currencyPair -> allExchangeRates.addAll(Arrays.asList(currencyPair)));
     }
 
-    public static Optional<Privatbank[]> getPrivatbankData() throws IOException, InterruptedException {
+    private static Optional<Privatbank[]> getPrivatbankData() throws IOException, InterruptedException {
         Optional<Privatbank[]> result = Optional.empty();
         try {
             return Optional.of(GSON.fromJson(
@@ -52,7 +52,7 @@ public class HTTPclient {
         }
     }
 
-    public static Optional<Monobank[]> getMonobankData() throws IOException, InterruptedException {
+    private static Optional<Monobank[]> getMonobankData() throws IOException, InterruptedException {
         Optional<Monobank[]> result = Optional.empty();
         try {
             return Optional.of(GSON.fromJson(
@@ -64,7 +64,7 @@ public class HTTPclient {
         }
     }
 
-    public static Optional<NBU[]> getNBUData() throws IOException, InterruptedException {
+    private static Optional<NBU[]> getNBUData() throws IOException, InterruptedException {
         Optional<NBU[]> result = Optional.empty();
         try {
             String HTMLBody = sendGETRequest("https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?json");

@@ -15,7 +15,7 @@ import java.util.Optional;
 public class HTTPclient {
     private final static HttpClient CLIENT = HttpClient.newHttpClient();
     public final static Gson GSON = new Gson().newBuilder().setPrettyPrinting().create();
-    private static final List<Currency> allExchangeRates = new ArrayList<>();
+    private static final List<Currency> ALL_RATES = new ArrayList<>();
 
 /**
     Использование:
@@ -26,9 +26,9 @@ public class HTTPclient {
            кастуем к типу необходимого класса (Приватбанк, Монобанк, НБУ и тд)
  */
 
-    public static List<Currency> getAllExchangeRates() throws IOException, InterruptedException {
-        if (allExchangeRates.isEmpty()) getAllBanksData();
-        return allExchangeRates;
+    public static List<Currency> getAllRates() throws IOException, InterruptedException {
+        if (ALL_RATES.isEmpty()) getAllBanksData();
+        return ALL_RATES;
     }
 
     private static void getAllBanksData() throws IOException, InterruptedException {
@@ -36,9 +36,9 @@ public class HTTPclient {
         var coursesMono = getMonobankData();
         var coursesNBU= getNBUData();
 
-        coursesPrivat.ifPresent(currencyPair -> allExchangeRates.addAll(Arrays.asList(currencyPair)));
-        coursesMono.ifPresent(currencyPair -> allExchangeRates.addAll(Arrays.asList(currencyPair)));
-        coursesNBU.ifPresent(currencyPair -> allExchangeRates.addAll(Arrays.asList(currencyPair)));
+        coursesPrivat.ifPresent(currencyPair -> ALL_RATES.addAll(Arrays.asList(currencyPair)));
+        coursesMono.ifPresent(currencyPair -> ALL_RATES.addAll(Arrays.asList(currencyPair)));
+        coursesNBU.ifPresent(currencyPair -> ALL_RATES.addAll(Arrays.asList(currencyPair)));
     }
 
     private static Optional<Privatbank[]> getPrivatbankData() throws IOException, InterruptedException {

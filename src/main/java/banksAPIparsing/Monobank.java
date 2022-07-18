@@ -3,6 +3,8 @@ package banksAPIparsing;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
+import java.util.Objects;
+
 @AllArgsConstructor
 @Data
 
@@ -35,11 +37,13 @@ public class Monobank implements Currency{
 
     @Override
     public double getBuy() {
-        return Double.parseDouble(rateBuy);
+        if (Objects.nonNull(rateBuy)) return Double.parseDouble(rateBuy);
+        else return 0.0;
     }
 
     @Override
     public double getSell() {
-        return Double.parseDouble(rateSell);
+        if (Objects.nonNull(rateSell)) return Double.parseDouble(rateSell);
+        else return 0.0;
     }
 }

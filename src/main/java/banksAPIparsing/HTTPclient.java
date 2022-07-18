@@ -34,7 +34,8 @@ public class HTTPclient {
     }
 
     private static void getAllBanksData() throws IOException, InterruptedException {
-        addToStorage(getPrivatbankData());
+        addToStorage(getPrivatbankData(4));
+        addToStorage(getPrivatbankData(3));
         addToStorage(getMonobankData());
         addToStorage(getNBUData());
     }
@@ -45,11 +46,11 @@ public class HTTPclient {
                 .forEach(ALL_RATES::add));
     }
 
-    private static Optional<Privatbank[]> getPrivatbankData() throws IOException, InterruptedException {
+    private static Optional<Privatbank[]> getPrivatbankData(int coursId) throws IOException, InterruptedException {
         Optional<Privatbank[]> result = Optional.empty();
         try {
             return Optional.of(GSON.fromJson(
-                    sendGETRequest("https://api.privatbank.ua/p24api/pubinfo?json&exchange&coursid=4"),
+                    sendGETRequest("https://api.privatbank.ua/p24api/pubinfo?json&exchange&coursid=" + coursId),
                     Privatbank[].class));
         } catch (RuntimeException e) {
             return result;

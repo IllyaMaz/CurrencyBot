@@ -19,13 +19,15 @@ public class HTTPclient {
 
 /**
     Использование:
-        1) в вашем коде вызываем метод getAllBanksData() для получения обновления курсов валют.
-        2) вызываем метод getAllExchangeRates() и получаем список, типизированный интерфейсом Currency
-        3) все необходимые методы уже вызываем непосредсвенно через доступные методы или (если нужны специфические)
+        1) в вашем коде вызываем метод getAllExchangeRates() и получаем список,
+           типизированный интерфейсом Currency
+        2) все необходимые методы уже вызываем непосредсвенно через доступные методы интерфейса Currency
+           или (если нужны специфические)
            кастуем к типу необходимого класса (Приватбанк, Монобанк, НБУ и тд)
  */
 
-    public static List<Currency> getAllExchangeRates() {
+    public static List<Currency> getAllExchangeRates() throws IOException, InterruptedException {
+        if (allExchangeRates.isEmpty()) getAllBanksData();
         return allExchangeRates;
     }
 

@@ -11,18 +11,15 @@ public class CurrencySetting {
         UAH
     }
 
-    private Currency originalCurrency = Currency.UAH;
-    private Map<Long,Currency> targetCurrency = new HashMap<>();
 
-    public Currency getOriginalCurrency(){
-        return originalCurrency;
+    private Map<Long,Currency> savedCurrency = new HashMap<>();
+
+
+    public Currency getSavedCurrency(long chatId){
+        return  savedCurrency.getOrDefault(chatId, Currency.USD);
     }
 
-    public Currency getTargetCurrency(long chatId){
-        return  targetCurrency.getOrDefault(chatId,Currency.USD);
-    }
-
-    public void setTargetCurrency(long chatId, Currency currency){
-        targetCurrency.put(chatId,currency);
+    public void setSavedCurrency(long chatId, Currency currency){
+        savedCurrency.put(chatId,currency);
     }
 }

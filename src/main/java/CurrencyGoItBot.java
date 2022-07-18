@@ -1,16 +1,18 @@
 import org.telegram.telegrambots.bots.DefaultBotOptions;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageReplyMarkup;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.MessageEntity;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
+import settings.BankSetting;
 
 import java.util.Optional;
 
 public class CurrencyGoItBot extends TelegramLongPollingBot {
-
+    BankSetting bankSetting = new BankSetting();
     protected CurrencyGoItBot(DefaultBotOptions options) {
         super(options);
     }
@@ -66,42 +68,60 @@ public class CurrencyGoItBot extends TelegramLongPollingBot {
     private void handleCallback(CallbackQuery callbackQuery) throws TelegramApiException {
         Message message = callbackQuery.getMessage();
         String data = callbackQuery.getData();
+        Long chatId = message.getChatId();
         switch (data) {
             case "buttonSettings":
                 execute(SendMessage.builder()
-                        .chatId(message.getChatId().toString())
+                        .chatId(chatId.toString())
                         .text("Налаштування.")
                         .replyMarkup(Button.getSettingsButtons())
                         .build());
                 break;
             case "buttonDigitsNumber":
                 execute(SendMessage.builder()
-                        .chatId(message.getChatId().toString())
+                        .chatId(chatId.toString())
                         .text("Виберіть кількість знаків після коми")
                         .replyMarkup(Button.getDigitsButtons())
                         .build());
                 break;
             case "buttonBank":
                 execute(SendMessage.builder()
-                        .chatId(message.getChatId().toString())
+                        .chatId(chatId.toString())
                         .text("Виберіть банк")
-                        .replyMarkup(Button.getBankButtons())
+                        .replyMarkup(BankSetting.getBankButtons(chatId))
                         .build());
                 break;
             case "buttonCurrencies":
                 execute(SendMessage.builder()
-                        .chatId(message.getChatId().toString())
+                        .chatId(chatId.toString())
                         .text("Виберіть валюту")
                         .replyMarkup(Button.getCurrenciesButtons())
                         .build());
                 break;
             case "buttonNotificationTime":
                 execute(SendMessage.builder()
-                        .chatId(message.getChatId().toString())
+                        .chatId(chatId.toString())
                         .text("Виберіть час сповіщення")
                         .replyMarkup(Button.getNotificationButtons())
                         .build());
                 break;
+
+            case "NBU":
+            case "PRIVAT":
+            case "MONO":
+                bankSetting.setSavedBank(chatId, BankSetting.Bank.valueOf(callbackQuery.getData()));
+                System.out.println(chatId);
+                System.out.println(bankSetting.getSavedBank(chatId));
+
+                
+                execute(EditMessageReplyMarkup.builder()
+                        .chatId(chatId)
+                        .messageId(message.getMessageId())
+                        .replyMarkup(BankSetting.getBankButtons(chatId))
+                        .build());
+
+                break;
+
         }
     }
 

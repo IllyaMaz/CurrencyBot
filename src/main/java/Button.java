@@ -6,6 +6,7 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMar
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardButton;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
+import settings.BankSetting;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -98,35 +99,7 @@ public class Button {
         return digitsMarkup;
     }
 
-    static InlineKeyboardMarkup getBankButtons() {
-        InlineKeyboardMarkup bankMarkup = new InlineKeyboardMarkup();
 
-        InlineKeyboardButton buttonNBU = new InlineKeyboardButton();
-        buttonNBU.setText("НБУ");
-        buttonNBU.setCallbackData("buttonNBU");
-        InlineKeyboardButton buttonPrivat = new InlineKeyboardButton();
-        buttonPrivat.setText("ПриватБанк");
-        buttonPrivat.setCallbackData("buttonPrivat");
-        InlineKeyboardButton buttonMono = new InlineKeyboardButton();
-        buttonMono.setText("МоноБанк");
-        buttonMono.setCallbackData("buttonMono");
-
-        List<InlineKeyboardButton> keyboardButtonsRow1 = new ArrayList<>();
-        keyboardButtonsRow1.add(buttonNBU);
-        List<InlineKeyboardButton> keyboardButtonsRow2 = new ArrayList<>();
-        keyboardButtonsRow2.add(buttonPrivat);
-        List<InlineKeyboardButton> keyboardButtonsRow3 = new ArrayList<>();
-        keyboardButtonsRow3.add(buttonMono);
-
-        List<List<InlineKeyboardButton>> rowList = new ArrayList<>();
-        rowList.add(keyboardButtonsRow1);
-        rowList.add(keyboardButtonsRow2);
-        rowList.add(keyboardButtonsRow3);
-
-        bankMarkup.setKeyboard(rowList);
-
-        return bankMarkup;
-    }
 
     static InlineKeyboardMarkup getCurrenciesButtons() {
         InlineKeyboardMarkup currenciesMarkup = new InlineKeyboardMarkup();

@@ -14,25 +14,7 @@ import java.util.Optional;
 public class Main {
     public static void main(String[] args)  {
         try {
-            List<Currency> list = new ArrayList<>();
-
-            var coursesPrivat = HTTPclient.getPrivatbankData();
-            //coursesPrivat.ifPresent(currencyPair -> Arrays.stream(currencyPair).forEach(System.out::println));
-            coursesPrivat.ifPresent(currencyPair -> list.addAll(Arrays.asList(currencyPair)));
-
-            var coursesMono = HTTPclient.getMonobankData();
-            //coursesMono.ifPresent(currencyPair -> Arrays.stream(currencyPair).forEach(System.out::println));
-            coursesMono.ifPresent(currencyPair -> list.addAll(Arrays.asList(currencyPair)));
-
-            var coursesNBU= HTTPclient.getNBUData();
-            //coursesNBU.ifPresent(currencyPair -> Arrays.stream(currencyPair).forEach(System.out::println));
-            coursesNBU.ifPresent(currencyPair -> list.addAll(Arrays.asList(currencyPair)));
-
-            list.forEach(x -> System.out.println(x.getCurrencyNumber() + ":" + x.getCurrencyCode()));
-
-
-
-
+            HTTPclient.getAllBanksData();
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException(e);
         }

@@ -7,12 +7,35 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 public class HTTPclient {
     private final static HttpClient CLIENT = HttpClient.newHttpClient();
     public final static Gson GSON = new Gson().newBuilder().setPrettyPrinting().create();
+    private static final List<Currency> allExchangeRates = new ArrayList<>();
 
+    public static List<Currency> getAllExchangeRates() {
+        return allExchangeRates;
+    }
+
+    public static void getAllBanksData() throws IOException, InterruptedException {
+        var coursesPrivat = getPrivatbankData();
+        var coursesMono = getMonobankData();
+        var coursesNBU= getNBUData();
+
+        coursesPrivat.ifPresent(currencyPair -> allExchangeRates.addAll(Arrays.asList(currencyPair)));
+        coursesMono.ifPresent(currencyPair -> allExchangeRates.addAll(Arrays.asList(currencyPair)));
+        coursesNBU.ifPresent(currencyPair -> allExchangeRates.addAll(Arrays.asList(currencyPair)));
+
+        //allExchangeRates.forEach(x -> System.out.println(x.getCurrencyNumber() + ":" + x.getCurrencyCode()));
+        allExchangeRates.forEach(x -> System.out.println(
+                x.getBankName() + ": " +
+                        x.getCurrencyNumber() + " - " +
+                        x.getBuy()));
+    }
 
     public static Optional<Privatbank[]> getPrivatbankData() throws IOException, InterruptedException {
         Optional<Privatbank[]> result = Optional.empty();

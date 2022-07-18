@@ -27,7 +27,7 @@ public class DecimalPlaceSetting {
 
     private static final Map<Long,DecimalPlace> decimalPlaceMap = new HashMap<>();
 
-    public static void setDecimalPlace(long chatId, DecimalPlace decimalPlace){
+    public void setDecimalPlace(long chatId, DecimalPlace decimalPlace){
         decimalPlaceMap.put(chatId,decimalPlace);
     }
 

@@ -1,6 +1,7 @@
 import org.telegram.telegrambots.bots.DefaultBotOptions;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageReplyMarkup;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.MessageEntity;
@@ -79,7 +80,7 @@ public class CurrencyGoItBot extends TelegramLongPollingBot {
                 execute(SendMessage.builder()
                         .chatId(message.getChatId().toString())
                         .text("Виберіть кількість знаків після коми")
-                        .replyMarkup(Button.getDigitsButtons())
+                        .replyMarkup(Button.getDigitsButtons(message.getChatId()))
                         .build());
                 break;
             case "buttonBank":
@@ -103,8 +104,32 @@ public class CurrencyGoItBot extends TelegramLongPollingBot {
                         .replyMarkup(Button.getNotificationButtons())
                         .build());
                 break;
+            case "button2":
+                decimalPlaceSetting.setDecimalPlace(message.getChatId(), DecimalPlaceSetting.DecimalPlace.TWO);
+                refreshDecimalPointButtons(message);
+                break;
+            case "button3":
+                decimalPlaceSetting.setDecimalPlace(message.getChatId(), DecimalPlaceSetting.DecimalPlace.THREE);
+                refreshDecimalPointButtons(message);
+                break;
+            case "button4":
+                decimalPlaceSetting.setDecimalPlace(message.getChatId(), DecimalPlaceSetting.DecimalPlace.FOUR);
+                refreshDecimalPointButtons(message);
+                break;
+
         }
+
     }
+
+    private void refreshDecimalPointButtons(Message message) throws TelegramApiException {
+        execute(EditMessageReplyMarkup.builder()
+                .chatId(message.getChatId())
+                .messageId(message.getMessageId())
+                .replyMarkup(Button.getDigitsButtons(message.getChatId()))
+                .build());
+    }
+
+
 
     private void handleMessage(Message message) throws TelegramApiException {
 

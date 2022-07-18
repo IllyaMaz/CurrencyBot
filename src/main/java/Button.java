@@ -71,19 +71,20 @@ public class Button {
         return settingsMarkup;
     }
 
-    static InlineKeyboardMarkup getDigitsButtons() {
+    static InlineKeyboardMarkup getDigitsButtons(long chatId) {
+        String savedDecimalPoint =  DecimalPlaceSetting.getDecimalPlace(chatId).getPosition();
         InlineKeyboardMarkup digitsMarkup = new InlineKeyboardMarkup();
 
         InlineKeyboardButton button2 = new InlineKeyboardButton();
-        button2.setText(markSavedParameter("2", DecimalPlaceSetting.DecimalPlace.TWO.getPosition()));
+        button2.setText(markSavedParameter(savedDecimalPoint, DecimalPlaceSetting.DecimalPlace.TWO.getPosition()));
         button2.setCallbackData("button2");
 
         InlineKeyboardButton button3 = new InlineKeyboardButton();
-        button3.setText(markSavedParameter("2", DecimalPlaceSetting.DecimalPlace.THREE.getPosition()));
+        button3.setText(markSavedParameter(savedDecimalPoint, DecimalPlaceSetting.DecimalPlace.THREE.getPosition()));
         button3.setCallbackData("button3");
 
         InlineKeyboardButton button4 = new InlineKeyboardButton();
-        button4.setText(markSavedParameter("2", DecimalPlaceSetting.DecimalPlace.FOUR.getPosition()));
+        button4.setText(markSavedParameter(savedDecimalPoint, DecimalPlaceSetting.DecimalPlace.FOUR.getPosition()));
         button4.setCallbackData("button4");
 
         List<InlineKeyboardButton> keyboardButtonsRow1 = new ArrayList<>();

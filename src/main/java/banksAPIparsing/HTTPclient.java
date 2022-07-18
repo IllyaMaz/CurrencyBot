@@ -20,8 +20,8 @@ public class HTTPclient {
 /**
      <B>Использование:</B><br>
         1) в вашем коде вызываем метод getAllExchangeRates() и получаем список,
-           типизированный интерфейсом Currency
-            пример: <B> Listlist = HTTPclient.getAllExchangeRates();</B><br>
+           типизированный интерфейсом Currency, пример: <br><br>
+         <B><font color="#e3ff00"> List list = HTTPclient.getAllExchangeRates();</font></></B><br><br>
         2) все необходимые методы уже вызываем непосредсвенно через доступные методы интерфейса Currency
            или (если нужны специфические)
            кастуем к типу необходимого класса (Приватбанк, Монобанк, НБУ и тд)

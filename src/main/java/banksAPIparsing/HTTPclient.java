@@ -34,13 +34,15 @@ public class HTTPclient {
     }
 
     private static void getAllBanksData() throws IOException, InterruptedException {
-        var coursesPrivat = getPrivatbankData();
-        var coursesMono = getMonobankData();
-        var coursesNBU= getNBUData();
+        addToStorage(getPrivatbankData());
+        addToStorage(getMonobankData());
+        addToStorage(getNBUData());
+    }
 
-        coursesPrivat.ifPresent(currencyPair -> ALL_RATES.addAll(Arrays.asList(currencyPair)));
-        coursesMono.ifPresent(currencyPair -> ALL_RATES.addAll(Arrays.asList(currencyPair)));
-        coursesNBU.ifPresent(currencyPair -> ALL_RATES.addAll(Arrays.asList(currencyPair)));
+    private static <T extends Currency> void addToStorage(Optional<T[]> courses) {
+        courses.ifPresent(currencyPair -> Arrays.stream(currencyPair)
+                .filter(currency -> Currencies.currs.containsKey(currency.getCurrencyCode()))
+                .forEach(ALL_RATES::add));
     }
 
     private static Optional<Privatbank[]> getPrivatbankData() throws IOException, InterruptedException {

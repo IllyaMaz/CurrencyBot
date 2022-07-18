@@ -29,12 +29,6 @@ public class HTTPclient {
         coursesPrivat.ifPresent(currencyPair -> allExchangeRates.addAll(Arrays.asList(currencyPair)));
         coursesMono.ifPresent(currencyPair -> allExchangeRates.addAll(Arrays.asList(currencyPair)));
         coursesNBU.ifPresent(currencyPair -> allExchangeRates.addAll(Arrays.asList(currencyPair)));
-
-        //allExchangeRates.forEach(x -> System.out.println(x.getCurrencyNumber() + ":" + x.getCurrencyCode()));
-        allExchangeRates.forEach(x -> System.out.println(
-                x.getBankName() + ": " +
-                        x.getCurrencyNumber() + " - " +
-                        x.getBuy()));
     }
 
     public static Optional<Privatbank[]> getPrivatbankData() throws IOException, InterruptedException {

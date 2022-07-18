@@ -21,7 +21,7 @@ public class HTTPclient {
      <B>Использование:</B><br>
         1) в вашем коде вызываем метод getAllExchangeRates() и получаем список,
            типизированный интерфейсом Currency, пример: <br><br>
-         <B><I><font color="#e3ff00"> List&#60Currency&#62 list = HTTPclient.getAllExchangeRates();</font></I></B><br><br>
+         <B><I><font color="#e3ff00"> List&#60Currency&#62 list = HTTPclient.getAllRates();</font></I></B><br><br>
         2) все необходимые методы уже вызываем непосредсвенно через доступные методы интерфейса Currency<br>
 
            или (если нужны специфические)
@@ -47,7 +47,7 @@ public class HTTPclient {
         Optional<Privatbank[]> result = Optional.empty();
         try {
             return Optional.of(GSON.fromJson(
-                    sendGETRequest("https://api.privatbank.ua/p24api/pubinfo?json&exchange&coursid=3"),
+                    sendGETRequest("https://api.privatbank.ua/p24api/pubinfo?json&exchange&coursid=4"),
                     Privatbank[].class));
         } catch (RuntimeException e) {
             return result;

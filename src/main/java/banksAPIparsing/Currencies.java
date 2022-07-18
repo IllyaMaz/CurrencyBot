@@ -9,6 +9,8 @@ public class Currencies {
     static {
         currs.put("USD",840);
         currs.put("EUR",978);
+        currs.put("RUB",643);
+        currs.put("UAH",980);
         currs.put("CHF",756);
         currs.put("CNY",156);
         currs.put("AED",784);

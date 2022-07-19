@@ -15,7 +15,7 @@ import java.util.Optional;
 public class HTTPclient {
     private final static HttpClient CLIENT = HttpClient.newHttpClient();
     public final static Gson GSON = new Gson().newBuilder().setPrettyPrinting().create();
-    private static final List<Currency> ALL_RATES = new ArrayList<>();
+    private final static List<Currency> ALL_RATES = new ArrayList<>();
 
     /**
      * <B>Использование:</B><br>

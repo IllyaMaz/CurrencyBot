@@ -6,16 +6,22 @@ import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.MessageEntity;
 import org.telegram.telegrambots.meta.api.objects.Update;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboard;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
+import settings.CurrencySetting;
 import settings.DecimalPlaceSetting;
 
 import java.util.Optional;
 
 public class CurrencyGoItBot extends TelegramLongPollingBot {
-    DecimalPlaceSetting decimalPlaceSetting = new DecimalPlaceSetting();
+    private static final DecimalPlaceSetting DECIMAL_PLACE_SETTING = new DecimalPlaceSetting();
+    private static final CurrencySetting CURRENCY_SETTING = new CurrencySetting();
+
     protected CurrencyGoItBot(DefaultBotOptions options) {
         super(options);
     }
+
     @Override
     public String getBotUsername() {
         return "@CurrencyGoItBot";
@@ -65,7 +71,7 @@ public class CurrencyGoItBot extends TelegramLongPollingBot {
         }
     }
 
-    private void handleCallback(CallbackQuery callbackQuery) throws TelegramApiException {
+   /* private void handleCallback(CallbackQuery callbackQuery) throws TelegramApiException {
         Message message = callbackQuery.getMessage();
         String data = callbackQuery.getData();
         switch (data) {
@@ -105,30 +111,73 @@ public class CurrencyGoItBot extends TelegramLongPollingBot {
                         .build());
                 break;
             case "button2":
-                decimalPlaceSetting.setDecimalPlace(message.getChatId(), DecimalPlaceSetting.DecimalPlace.TWO);
+                DECIMAL_PLACE_SETTING.setDecimalPlace(message.getChatId(), DecimalPlaceSetting.DecimalPlace.TWO);
                 refreshDecimalPointButtons(message);
                 break;
             case "button3":
-                decimalPlaceSetting.setDecimalPlace(message.getChatId(), DecimalPlaceSetting.DecimalPlace.THREE);
+                DECIMAL_PLACE_SETTING.setDecimalPlace(message.getChatId(), DecimalPlaceSetting.DecimalPlace.THREE);
                 refreshDecimalPointButtons(message);
                 break;
             case "button4":
-                decimalPlaceSetting.setDecimalPlace(message.getChatId(), DecimalPlaceSetting.DecimalPlace.FOUR);
+                DECIMAL_PLACE_SETTING.setDecimalPlace(message.getChatId(), DecimalPlaceSetting.DecimalPlace.FOUR);
                 refreshDecimalPointButtons(message);
                 break;
-
         }
+    }*/
 
+
+    private void handleCallback(CallbackQuery callbackQuery) throws TelegramApiException {
+        Message message = callbackQuery.getMessage();
+        Long chatId = message.getChatId();
+        String data = callbackQuery.getData();
+        switch (data) {
+            case "buttonSettings" -> buildMessage(message, "Налаштування.", Button.getSettingsButtons());
+            case "buttonDigitsNumber" -> buildMessage(message, "Виберіть кількість знаків після коми", Button.getDigitsButtons(chatId));
+            case "buttonBank" -> buildMessage(message, "Виберіть банк", Button.getBankButtons());
+            case "buttonCurrencies" -> buildMessage(message, "Виберіть валюту", Button.getCurrenciesButtons(chatId));
+            case "buttonNotificationTime" -> buildMessage(message, "Виберіть час сповіщення", Button.getNotificationButtons());
+            case "button2" -> {
+                DECIMAL_PLACE_SETTING.setDecimalPlace(chatId, DecimalPlaceSetting.DecimalPlace.TWO);
+                refreshMessage(message, Button.getDigitsButtons(chatId));
+            }
+            case "button3" -> {
+                DECIMAL_PLACE_SETTING.setDecimalPlace(chatId, DecimalPlaceSetting.DecimalPlace.THREE);
+                refreshMessage(message, Button.getDigitsButtons(chatId));
+            }
+            case "button4" -> {
+                DECIMAL_PLACE_SETTING.setDecimalPlace(chatId, DecimalPlaceSetting.DecimalPlace.FOUR);
+                refreshMessage(message, Button.getDigitsButtons(chatId));
+            }
+            case "buttonUSD" -> {
+                CURRENCY_SETTING.setTargetCurrency(chatId, CurrencySetting.Currency.USD);
+                refreshMessage(message, Button.getCurrenciesButtons(chatId));
+            }
+            case "buttonEUR" -> {
+                CURRENCY_SETTING.setTargetCurrency(chatId, CurrencySetting.Currency.EUR);
+                refreshMessage(message, Button.getCurrenciesButtons(chatId));
+            }
+            case "buttonRUB" -> {
+                CURRENCY_SETTING.setTargetCurrency(chatId, CurrencySetting.Currency.RUB);
+                refreshMessage(message, Button.getCurrenciesButtons(chatId));
+            }
+        }
     }
 
-    private void refreshDecimalPointButtons(Message message) throws TelegramApiException {
-        execute(EditMessageReplyMarkup.builder()
-                .chatId(message.getChatId())
-                .messageId(message.getMessageId())
-                .replyMarkup(Button.getDigitsButtons(message.getChatId()))
+    private void buildMessage(Message message, String text, ReplyKeyboard replyKeyboard) throws TelegramApiException {
+        execute(SendMessage.builder()
+                .chatId(message.getChatId().toString())
+                .text(text)
+                .replyMarkup(replyKeyboard)
                 .build());
     }
 
+    private void refreshMessage(Message message, InlineKeyboardMarkup inlineKeyboardMarkup) throws TelegramApiException {
+        execute(EditMessageReplyMarkup.builder()
+                .chatId(message.getChatId())
+                .messageId(message.getMessageId())
+                .replyMarkup(inlineKeyboardMarkup)
+                .build());
+    }
 
 
     private void handleMessage(Message message) throws TelegramApiException {

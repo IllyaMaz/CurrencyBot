@@ -6,6 +6,7 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMar
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardButton;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
+import settings.CurrencySetting;
 import settings.DecimalPlaceSetting;
 
 import java.util.ArrayList;
@@ -73,6 +74,7 @@ public class Button {
 
     static InlineKeyboardMarkup getDigitsButtons(long chatId) {
         String savedDecimalPoint =  DecimalPlaceSetting.getDecimalPlace(chatId).getPosition();
+
         InlineKeyboardMarkup digitsMarkup = new InlineKeyboardMarkup();
 
         InlineKeyboardButton button2 = new InlineKeyboardButton();
@@ -133,17 +135,20 @@ public class Button {
         return bankMarkup;
     }
 
-    static InlineKeyboardMarkup getCurrenciesButtons() {
+    static InlineKeyboardMarkup getCurrenciesButtons(long chatId) {
+        String savedTargetCurrency = CurrencySetting.getTargetCurrency(chatId).name();
         InlineKeyboardMarkup currenciesMarkup = new InlineKeyboardMarkup();
 
         InlineKeyboardButton buttonUSD = new InlineKeyboardButton();
-        buttonUSD.setText("USD");
+        buttonUSD.setText(markSavedParameter(savedTargetCurrency, CurrencySetting.Currency.USD.name()));
         buttonUSD.setCallbackData("buttonUSD");
+
         InlineKeyboardButton buttonEUR = new InlineKeyboardButton();
-        buttonEUR.setText("EUR");
+        buttonEUR.setText(markSavedParameter(savedTargetCurrency, CurrencySetting.Currency.EUR.name()));
         buttonEUR.setCallbackData("buttonEUR");
+
         InlineKeyboardButton buttonRUB = new InlineKeyboardButton();
-        buttonRUB.setText("RUB");
+        buttonRUB.setText(markSavedParameter(savedTargetCurrency, CurrencySetting.Currency.RUB.name()));
         buttonRUB.setCallbackData("buttonRUB");
 
         List<InlineKeyboardButton> keyboardButtonsRow1 = new ArrayList<>();

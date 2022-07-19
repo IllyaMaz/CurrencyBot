@@ -8,8 +8,8 @@ public class DecimalPlaceSetting {
         TWO("2","#0.00"),
         THREE("3","#0.000"),
         FOUR("4","#0.0000");
-        private String position;
-        private String pattern;
+        private final String position;
+        private final String pattern;
 
         DecimalPlace(String position, String pattern) {
             this.position = position;

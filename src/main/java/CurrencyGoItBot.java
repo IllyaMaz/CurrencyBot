@@ -11,9 +11,10 @@ import settings.BankSetting;
 import settings.CurrencySetting;
 import settings.NumberSimbolsAfterCommaSetting;
 
+import java.text.DecimalFormat;
 import java.util.Optional;
 
-public class CurrencyGoItBot extends TelegramLongPollingBot {
+public class CurrencyGoItBot extends TelegramLongPollingBot implements DecimalFormatable {
     BankSetting bankSetting = new BankSetting();
     NumberSimbolsAfterCommaSetting digitsSetting = new NumberSimbolsAfterCommaSetting();
     CurrencySetting currencySetting = new CurrencySetting();
@@ -59,7 +60,6 @@ public class CurrencyGoItBot extends TelegramLongPollingBot {
     private void handleCommand(Update update) throws TelegramApiException {
         Message message = update.getMessage();
         String textCommand = update.getMessage().getText();
-
         switch (textCommand) {
             case "/start":
                 execute(SendMessage.builder()
@@ -71,7 +71,8 @@ public class CurrencyGoItBot extends TelegramLongPollingBot {
         }
     }
 
-    private void handleCallback(CallbackQuery callbackQuery) throws TelegramApiException {
+    private void handleCallback(CallbackQuery callbackQuery)  throws TelegramApiException {
+        System.out.println();
         Message message = callbackQuery.getMessage();
         String data = callbackQuery.getData();
         Long chatId = message.getChatId();

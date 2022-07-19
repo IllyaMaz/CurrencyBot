@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class NumberSimbolsAfterCommaSetting {
+public class NumberSimbolsAfterCommaSetting{
     public enum NumberSimbolsAfterComma {
         TWO("#0.00"),
         THREE("#0.000"),
@@ -24,6 +24,7 @@ public class NumberSimbolsAfterCommaSetting {
             return pattern;
         }
     }
+
 
     private static final Map<Long,NumberSimbolsAfterComma> simbolsAfterCommaMap = new HashMap<>();
 

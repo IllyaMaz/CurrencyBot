@@ -12,9 +12,16 @@ repositories {
 
 dependencies {
     implementation 'org.telegram:telegrambots:6.1.0'
+    implementation 'com.google.code.gson:gson:2.9.0'
+    implementation 'org.jetbrains:annotations:23.0.0'
     compileOnly 'org.projectlombok:lombok:1.18.24'
+    annotationProcessor 'org.projectlombok:lombok:1.18.24'
 }
 
 test {
     useJUnitPlatform()
+}
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
 }

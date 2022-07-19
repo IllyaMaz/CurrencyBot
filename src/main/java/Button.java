@@ -71,70 +71,10 @@ public class Button {
         return settingsMarkup;
     }
 
-    static InlineKeyboardMarkup getDigitsButtons() {
-        InlineKeyboardMarkup digitsMarkup = new InlineKeyboardMarkup();
-        InlineKeyboardButton button2 = new InlineKeyboardButton();
-        button2.setText("2");
-        button2.setCallbackData("button2");
-        InlineKeyboardButton button3 = new InlineKeyboardButton();
-        button3.setText("3");
-        button3.setCallbackData("button3");
-        InlineKeyboardButton button4 = new InlineKeyboardButton();
-        button4.setText("4");
-        button4.setCallbackData("button4");
-
-        List<InlineKeyboardButton> keyboardButtonsRow1 = new ArrayList<>();
-        keyboardButtonsRow1.add(button2);
-        List<InlineKeyboardButton> keyboardButtonsRow2 = new ArrayList<>();
-        keyboardButtonsRow2.add(button3);
-        List<InlineKeyboardButton> keyboardButtonsRow3 = new ArrayList<>();
-        keyboardButtonsRow3.add(button4);
-
-        List<List<InlineKeyboardButton>> rowList = new ArrayList<>();
-        rowList.add(keyboardButtonsRow1);
-        rowList.add(keyboardButtonsRow2);
-        rowList.add(keyboardButtonsRow3);
-
-        digitsMarkup.setKeyboard(rowList);
-        return digitsMarkup;
-    }
-
-
-
-    static InlineKeyboardMarkup getCurrenciesButtons() {
-        InlineKeyboardMarkup currenciesMarkup = new InlineKeyboardMarkup();
-
-        InlineKeyboardButton buttonUSD = new InlineKeyboardButton();
-        buttonUSD.setText("USD");
-        buttonUSD.setCallbackData("buttonUSD");
-        InlineKeyboardButton buttonEUR = new InlineKeyboardButton();
-        buttonEUR.setText("EUR");
-        buttonEUR.setCallbackData("buttonEUR");
-        InlineKeyboardButton buttonRUB = new InlineKeyboardButton();
-        buttonRUB.setText("RUB");
-        buttonRUB.setCallbackData("buttonRUB");
-
-        List<InlineKeyboardButton> keyboardButtonsRow1 = new ArrayList<>();
-        keyboardButtonsRow1.add(buttonUSD);
-        List<InlineKeyboardButton> keyboardButtonsRow2 = new ArrayList<>();
-        keyboardButtonsRow2.add(buttonEUR);
-        List<InlineKeyboardButton> keyboardButtonsRow3 = new ArrayList<>();
-        keyboardButtonsRow3.add(buttonRUB);
-
-        List<List<InlineKeyboardButton>> rowList = new ArrayList<>();
-        rowList.add(keyboardButtonsRow1);
-        rowList.add(keyboardButtonsRow2);
-        rowList.add(keyboardButtonsRow3);
-
-        currenciesMarkup.setKeyboard(rowList);
-
-        return currenciesMarkup;
-    }
-
     static ReplyKeyboardMarkup getNotificationButtons() {
         ReplyKeyboardMarkup notificationMarkup = new ReplyKeyboardMarkup();
         notificationMarkup.setResizeKeyboard(true);
-        notificationMarkup.setOneTimeKeyboard(false);
+        notificationMarkup.setOneTimeKeyboard(true);
 
         List<KeyboardRow> keyboard = new ArrayList<>();
 

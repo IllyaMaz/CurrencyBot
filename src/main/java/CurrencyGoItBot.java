@@ -8,14 +8,20 @@ import org.telegram.telegrambots.meta.api.objects.MessageEntity;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import settings.BankSetting;
+import settings.CurrencySetting;
+import settings.NumberSimbolsAfterCommaSetting;
 
 import java.util.Optional;
 
 public class CurrencyGoItBot extends TelegramLongPollingBot {
     BankSetting bankSetting = new BankSetting();
+    NumberSimbolsAfterCommaSetting digitsSetting = new NumberSimbolsAfterCommaSetting();
+    CurrencySetting currencySetting = new CurrencySetting();
+
     protected CurrencyGoItBot(DefaultBotOptions options) {
         super(options);
     }
+
     @Override
     public String getBotUsername() {
         return "@CurrencyGoItBot";
@@ -81,7 +87,7 @@ public class CurrencyGoItBot extends TelegramLongPollingBot {
                 execute(SendMessage.builder()
                         .chatId(chatId.toString())
                         .text("Виберіть кількість знаків після коми")
-                        .replyMarkup(Button.getDigitsButtons())
+                        .replyMarkup(NumberSimbolsAfterCommaSetting.getDigitsButtons(chatId))
                         .build());
                 break;
             case "buttonBank":
@@ -95,7 +101,7 @@ public class CurrencyGoItBot extends TelegramLongPollingBot {
                 execute(SendMessage.builder()
                         .chatId(chatId.toString())
                         .text("Виберіть валюту")
-                        .replyMarkup(Button.getCurrenciesButtons())
+                        .replyMarkup(CurrencySetting.getCurrenciesButtons(chatId))
                         .build());
                 break;
             case "buttonNotificationTime":
@@ -110,10 +116,7 @@ public class CurrencyGoItBot extends TelegramLongPollingBot {
             case "PRIVAT":
             case "MONO":
                 bankSetting.setSavedBank(chatId, BankSetting.Bank.valueOf(callbackQuery.getData()));
-                System.out.println(chatId);
-                System.out.println(bankSetting.getSavedBank(chatId));
 
-                
                 execute(EditMessageReplyMarkup.builder()
                         .chatId(chatId)
                         .messageId(message.getMessageId())
@@ -122,7 +125,34 @@ public class CurrencyGoItBot extends TelegramLongPollingBot {
 
                 break;
 
+            case "TWO":
+            case "THREE":
+            case "FOUR":
+                digitsSetting.setSimbolsAfterComma(chatId, NumberSimbolsAfterCommaSetting.NumberSimbolsAfterComma.valueOf(callbackQuery.getData()));
+
+                execute(EditMessageReplyMarkup.builder()
+                        .chatId(chatId)
+                        .messageId(message.getMessageId())
+                        .replyMarkup(NumberSimbolsAfterCommaSetting.getDigitsButtons(chatId))
+                        .build());
+
+                break;
+
+            case "USD":
+            case "EUR":
+            case "RUB":
+                currencySetting.setSavedCurrency(chatId, CurrencySetting.Currency.valueOf(callbackQuery.getData()));
+
+                execute(EditMessageReplyMarkup.builder()
+                        .chatId(chatId)
+                        .messageId(message.getMessageId())
+                        .replyMarkup(CurrencySetting.getCurrenciesButtons(chatId))
+                        .build());
+
+                break;
+
         }
+
     }
 
     private void handleMessage(Message message) throws TelegramApiException {

@@ -7,27 +7,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-/*
-*       TWO("2","#0.00"),
-        THREE("3","#0.000"),
-        FOUR("4","#0.0000");
-        private final String position;
-        private final String pattern;
 
-        DecimalPlace(String position, String pattern) {
-            this.position = position;
-            this.pattern = pattern;
-        }
-
-        public String getPosition() {
-            return position;
-        }
-
-        public String getPattern() {
-            return pattern;
-        }
-*
-* */
 public class NumberSimbolsAfterCommaSetting {
     public enum NumberSimbolsAfterComma {
         TWO("#0.00"),

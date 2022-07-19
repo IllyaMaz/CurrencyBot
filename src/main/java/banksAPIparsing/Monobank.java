@@ -38,12 +38,12 @@ public class Monobank implements Currency{
     @Override
     public double getBuy() {
         if (Objects.nonNull(rateBuy)) return Double.parseDouble(rateBuy);
-        else return 0.0;
+        else return Double.parseDouble(rateCross);
     }
 
     @Override
     public double getSell() {
         if (Objects.nonNull(rateSell)) return Double.parseDouble(rateSell);
-        else return 0.0;
+        else return Double.parseDouble(rateCross);
     }
 }

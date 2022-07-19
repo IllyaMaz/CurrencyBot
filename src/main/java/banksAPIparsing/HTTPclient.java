@@ -15,38 +15,46 @@ import java.util.Optional;
 public class HTTPclient {
     private final static HttpClient CLIENT = HttpClient.newHttpClient();
     public final static Gson GSON = new Gson().newBuilder().setPrettyPrinting().create();
-    private static final List<Currency> ALL_RATES = new ArrayList<>();
+    private final static List<Currency> ALL_RATES = new ArrayList<>();
 
-/**
-     <B>Использование:</B><br>
-        1) в вашем коде вызываем метод getAllExchangeRates() и получаем список,
-           типизированный интерфейсом Currency, пример: <br><br>
-         <B><font color="#e3ff00"> List list = HTTPclient.getAllExchangeRates();</font></></B><br><br>
-        2) все необходимые методы уже вызываем непосредсвенно через доступные методы интерфейса Currency
-           или (если нужны специфические)
-           кастуем к типу необходимого класса (Приватбанк, Монобанк, НБУ и тд)
- */
+    /**
+     * <B>Использование:</B><br>
+     * 1) в вашем коде вызываем метод getAllExchangeRates() и получаем список,
+     * типизированный интерфейсом Currency, пример: <br><br>
+     * <B><I><font color="#e3ff00"> List&#60Currency&#62 list = HTTPclient.getAllExchangeRates();</font></I></B><br><br>
+     * 2) все необходимые методы уже вызываем непосредсвенно через доступные методы интерфейса Currency<br><br>
+     * <font color="#e3ff00">getBankName();<br>
+     * <i>getCurrencyNumber();</i><br>
+     * getCurrencyCode();<br>
+     * getBuy();<br>
+     * getSell();</font><br><br>
+     * или (если нужны специфические)
+     * кастуем к типу необходимого класса (Приватбанк,Монобанк,НБУ и тд)
+     */
 
-    public static List<Currency> getAllRates() throws IOException, InterruptedException {
+    public static List<Currency> getAllExchangeRates() throws IOException, InterruptedException {
         if (ALL_RATES.isEmpty()) getAllBanksData();
         return ALL_RATES;
     }
 
     private static void getAllBanksData() throws IOException, InterruptedException {
-        var coursesPrivat = getPrivatbankData();
-        var coursesMono = getMonobankData();
-        var coursesNBU= getNBUData();
-
-        coursesPrivat.ifPresent(currencyPair -> ALL_RATES.addAll(Arrays.asList(currencyPair)));
-        coursesMono.ifPresent(currencyPair -> ALL_RATES.addAll(Arrays.asList(currencyPair)));
-        coursesNBU.ifPresent(currencyPair -> ALL_RATES.addAll(Arrays.asList(currencyPair)));
+        addToStorage(getPrivatbankData(4));
+        addToStorage(getPrivatbankData(3));
+        addToStorage(getMonobankData());
+        addToStorage(getNBUData());
     }
 
-    private static Optional<Privatbank[]> getPrivatbankData() throws IOException, InterruptedException {
+    private static <T extends Currency> void addToStorage(Optional<T[]> courses) {
+        courses.ifPresent(currencyArray -> Arrays.stream(currencyArray)
+                .filter(currency -> Currencies.currs.containsKey(currency.getCurrencyCode()))
+                .forEach(ALL_RATES::add));
+    }
+
+    private static Optional<Privatbank[]> getPrivatbankData(int coursId) throws IOException, InterruptedException {
         Optional<Privatbank[]> result = Optional.empty();
         try {
             return Optional.of(GSON.fromJson(
-                    sendGETRequest("https://api.privatbank.ua/p24api/pubinfo?json&exchange&coursid=4"),
+                    sendGETRequest("https://api.privatbank.ua/p24api/pubinfo?json&exchange&coursid=" + coursId),
                     Privatbank[].class));
         } catch (RuntimeException e) {
             return result;
@@ -70,10 +78,10 @@ public class HTTPclient {
         Optional<NBU[]> result = Optional.empty();
         try {
             String HTMLBody = sendGETRequest("https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?json");
-            return Optional.of(GSON.fromJson(HTMLBody,NBU[].class));
+            return Optional.of(GSON.fromJson(HTMLBody, NBU[].class));
         } catch (RuntimeException e) {
             System.out.println("\033[1;31m" + "Can't get NBU data" + "\033[0m");
-            return  result;
+            return result;
         }
     }
 

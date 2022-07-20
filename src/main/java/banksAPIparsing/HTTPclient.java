@@ -15,7 +15,7 @@ import java.util.Optional;
 public class HTTPclient {
     private final static HttpClient CLIENT = HttpClient.newHttpClient();
     public final static Gson GSON = new Gson().newBuilder().setPrettyPrinting().create();
-    private final static List<BankResponse> ALL_RATES = new ArrayList<>();
+    private final static List<BankResponse> ALL_RATES = new ArrayList<>(150);
 
     /**
      * <B>Использование:</B><br>
@@ -32,9 +32,14 @@ public class HTTPclient {
      * кастуем к типу необходимого класса (Приватбанк,Монобанк,НБУ и тд)
      */
 
-    public static List<BankResponse> getAllExchangeRates() throws IOException, InterruptedException {
+    synchronized public static List<BankResponse> getAllExchangeRates() throws IOException, InterruptedException {
         if (ALL_RATES.isEmpty()) getAllBanksData();
         return ALL_RATES;
+    }
+
+    synchronized public static void updateAllExchangeRates() throws IOException, InterruptedException {
+        ALL_RATES.clear();
+        getAllBanksData();
     }
 
     private static void getAllBanksData() throws IOException, InterruptedException {

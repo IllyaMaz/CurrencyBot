@@ -6,7 +6,7 @@ import lombok.Data;
 @AllArgsConstructor
 @Data
 
-public class Privatbank implements Currency{
+public class Privatbank implements BankResponse {
     private String ccy;
     private String base_ccy;
     private double buy;

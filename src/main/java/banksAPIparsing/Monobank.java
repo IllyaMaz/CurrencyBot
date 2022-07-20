@@ -8,7 +8,7 @@ import java.util.Objects;
 @AllArgsConstructor
 @Data
 
-public class Monobank implements Currency{
+public class Monobank implements BankResponse {
     private String currencyCodeA;
     private String currencyCodeB;
     private String date;

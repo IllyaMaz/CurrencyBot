@@ -15,7 +15,7 @@ import java.util.Optional;
 public class HTTPclient {
     private final static HttpClient CLIENT = HttpClient.newHttpClient();
     public final static Gson GSON = new Gson().newBuilder().setPrettyPrinting().create();
-    private final static List<Currency> ALL_RATES = new ArrayList<>();
+    private final static List<BankResponse> ALL_RATES = new ArrayList<>();
 
     /**
      * <B>Использование:</B><br>
@@ -32,7 +32,7 @@ public class HTTPclient {
      * кастуем к типу необходимого класса (Приватбанк,Монобанк,НБУ и тд)
      */
 
-    public static List<Currency> getAllExchangeRates() throws IOException, InterruptedException {
+    public static List<BankResponse> getAllExchangeRates() throws IOException, InterruptedException {
         if (ALL_RATES.isEmpty()) getAllBanksData();
         return ALL_RATES;
     }
@@ -44,7 +44,7 @@ public class HTTPclient {
         addToStorage(getNBUData());
     }
 
-    private static <T extends Currency> void addToStorage(Optional<T[]> courses) {
+    private static <T extends BankResponse> void addToStorage(Optional<T[]> courses) {
         courses.ifPresent(currencyArray -> Arrays.stream(currencyArray)
                 .filter(currency -> Currencies.currs.containsKey(currency.getCurrencyCode()))
                 .forEach(ALL_RATES::add));

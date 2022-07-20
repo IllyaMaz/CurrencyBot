@@ -1,6 +1,6 @@
 package banksAPIparsing;
 
-public interface Currency {
+public interface BankResponse {
     String getBankName();
     int getCurrencyNumber();
     String getCurrencyCode();

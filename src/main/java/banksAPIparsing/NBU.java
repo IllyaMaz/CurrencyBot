@@ -6,7 +6,7 @@ import lombok.Data;
 @AllArgsConstructor
 @Data
 
-public class NBU implements Currency{
+public class NBU implements BankResponse {
     private String r030;
     private String txt;
     private String rate;

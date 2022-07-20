@@ -1,11 +1,10 @@
 import banksAPIparsing.*;
-import banksAPIparsing.Currency;
+import banksAPIparsing.BankResponse;
 import settings.*;
 import settings.BankSetting.*;
-import settings.CurrencySetting.*;
+import settings.CurrencySetting;
 
 import java.io.IOException;
-import java.net.http.HttpClient;
 import java.util.List;
 
 public class MakeOutputString {
@@ -20,8 +19,18 @@ public class MakeOutputString {
     private String sell;
     private String buye;
 
+    public Long getChatId() {
+        return chatId;
+    }
+
+    public void setChatId(Long chatId) {
+        this.chatId = chatId;
+    }
+
+    private static Long chatId;
+
     public static void main(String[] args) {
-        List<Currency> list;
+        List<BankResponse> list;
         try {
             list = HTTPclient.getAllExchangeRates();
         } catch (IOException e) {
@@ -39,9 +48,14 @@ public class MakeOutputString {
 //        }
 
         list.stream().filter(x -> x.getCurrencyCode().equals("USD"))
-                .map(Currency::getBuy).forEach(System.out::println);
+                .map(BankResponse::getBuy).forEach(System.out::println);
+    }
 
-
-        BankSetting.getSavedBank(123);
+    public void processInfo() {
+        Bank currBank = BankSetting.getSavedBank(chatId);
+        List<CurrencySetting.Currency> currency = CurrencySetting.getSavedCurrencies(chatId);
+        NumberSimbolsAfterCommaSetting.NumberSimbolsAfterComma afterComma =
+                NumberSimbolsAfterCommaSetting.getSimbolsAfterComma(chatId);
+        System.out.println("CurrBank: " + currBank.toString());
     }
 }

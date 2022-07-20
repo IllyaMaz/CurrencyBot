@@ -20,9 +20,9 @@ public class HTTPclient {
     /**
      * <B>Использование:</B><br>
      * 1) в вашем коде вызываем метод getAllExchangeRates() и получаем список,
-     * типизированный интерфейсом Currency, пример: <br><br>
-     * <B><I><font color="#e3ff00"> List&#60Currency&#62 list = HTTPclient.getAllExchangeRates();</font></I></B><br><br>
-     * 2) все необходимые методы уже вызываем непосредсвенно через доступные методы интерфейса Currency<br><br>
+     * типизированный интерфейсом BankResponse, пример: <br><br>
+     * <B><I><font color="#e3ff00"> List&#60BankResponse&#62 list = HTTPclient.getAllExchangeRates();</font></I></B><br><br>
+     * 2) все необходимые методы уже вызываем непосредсвенно через доступные методы интерфейса BankResponse<br><br>
      * <font color="#e3ff00">getBankName();<br>
      * <i>getCurrencyNumber();</i><br>
      * getCurrencyCode();<br>

@@ -47,7 +47,7 @@ public class CurrencyGoItBot extends TelegramLongPollingBot implements DecimalFo
             } catch (TelegramApiException e) {
                 e.printStackTrace();
             }
-        } else if (update.hasMessage() && update.getMessage().hasEntities()) {
+        } else if (update.hasMessage() && update.getMessage().hasText()) {
             try {
                 handleMessage(update.getMessage());
             } catch (TelegramApiException e) {
@@ -161,23 +161,13 @@ public class CurrencyGoItBot extends TelegramLongPollingBot implements DecimalFo
     }
 
     private void handleMessage(Message message) throws TelegramApiException {
-
-        if (message.hasText() && message.hasEntities()) {
-            Optional<MessageEntity> commandEntities = message.getEntities()
-                    .stream()
-                    .filter(e -> "bot_command".equals(e.getType())).findFirst();
-            if (((Optional<?>) commandEntities).isPresent()) {
-                String command = message
-                        .getText()
-                        .substring(commandEntities.get().getOffset(), commandEntities.get().getLength());
-                switch (command) {
-                    case "some text":
-
-                        break;
-                }
-
-            }
-
+        String text = message.getText();
+        switch (text) {
+            case "9":
+                execute(SendMessage.builder()
+                        .chatId(message.getChatId().toString())
+                        .text("Оповещение прилетит в 9 утра.")
+                        .build());
         }
     }
 }

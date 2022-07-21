@@ -57,7 +57,7 @@ public class MakeOutputString {
         setChatId(1L);
 
         List<Currency> selectedCurrencys = CurrencySetting.getSavedCurrencies(chatId);
-        System.out.println("Выбранные валюты: " + selectedCurrencys);
+        System.out.println("Выбранные валюты: (List<Currency>) " + selectedCurrencys);
 
         NumberSimbolsAfterCommaSetting.NumberSimbolsAfterComma afterComma =
                 NumberSimbolsAfterCommaSetting.getSimbolsAfterComma(chatId);
@@ -81,6 +81,31 @@ public class MakeOutputString {
             list = HTTPclient.getAllExchangeRates();
 
             for (BankResponse resp: list) {
+//                System.out.println("******** Переданый список: (List<Currency>) = " + selectedCurrencys);
+                for (Currency currency : selectedCurrencys) {
+//                    System.out.println("*** Currency is  " + currency);
+//                    System.out.println("*** Currency из списка интересных = " + currency.name());
+//                    System.out.println("*** Currency в ЭТОМ респонсе = " + resp.getCurrencyCode());
+//                    System.out.println("******************************************");
+                    if (resp.getCurrencyCode().equalsIgnoreCase(currency.name())) {
+                        System.out.println("*** Currency is  " + currency);
+                        System.out.println();
+//                        System.out.println("************ BINGO *******************");
+//                        System.out.println("**********************************************");
+                        System.out.println("Банк :" + resp.getBankName());
+                        System.out.println("Валюта :" + resp.getCurrencyCode());
+                        System.out.println("Продажа :" + resp.getSell());
+                        System.out.println("Покупка :" + resp.getBuy());
+                        System.out.println();
+                    }
+                }
+//                System.out.println("***target currency = " + resp.getCurrencyCode());
+//                System.out.println("*** Текущая валюта: (String) = " + resp.getCurrencyCode());
+//                for (Currency currency :
+//                     selectedCurrencys) {
+//                    if
+//                }
+//                if (resp.getCurrencyCode().equals())
 //                if (resp.getBankName().equals("Monobank"))
 //                System.out.println("resp.getCurrencyCode() = " + resp.getCurrencyCode());
 //                System.out.println("CurrencySetting.Currency.EUR.toString() = " + CurrencySetting.Currency.EUR.toString());
@@ -88,11 +113,11 @@ public class MakeOutputString {
 //                {
 //                    for (Currency currency : selectedCurrencys) {
 //                        if (resp.getCurrencyCode().equals(currency.toString())) {
-                        System.out.println("**********************************************");
-                        System.out.println("** resp.getBankName() = " + resp.getBankName());
-                        System.out.println("** resp.getCurrencyCode() = " + resp.getCurrencyCode());
-                        System.out.println("** resp.getSell() = " + resp.getSell());
-                        System.out.println("** resp.getBuy() = " + resp.getBuy());
+//                        System.out.println("**********************************************");
+//                        System.out.println("** resp.getBankName() = " + resp.getBankName());
+//                        System.out.println("** resp.getCurrencyCode() = " + resp.getCurrencyCode());
+//                        System.out.println("** resp.getSell() = " + resp.getSell());
+//                        System.out.println("** resp.getBuy() = " + resp.getBuy());
 //                        } else {
 //                            System.out.println("Такой валюты нет!!!");
 //                        }

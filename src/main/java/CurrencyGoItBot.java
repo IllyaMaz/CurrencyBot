@@ -172,12 +172,86 @@ public class CurrencyGoItBot extends TelegramLongPollingBot implements DecimalFo
                         .substring(commandEntities.get().getOffset(), commandEntities.get().getLength());
                 switch (command) {
                     case "some text":
-
+                        break;
+                    case "9":
+                        Notification.notificationSleepTime(9);
+                        execute(SendMessage.builder()
+                                .chatId(message.getChatId())
+                                .text("Я надішлю Вам сповіщення о 9 годині.")
+                                .build());
+                        break;
+                    case "10":
+                        Notification.notificationSleepTime(10);
+                        execute(SendMessage.builder()
+                                .chatId(message.getChatId())
+                                .text("Я надішлю Вам сповіщення о 10 годині.")
+                                .build());
+                        break;
+                    case "11":
+                        Notification.notificationSleepTime(11);
+                        execute(SendMessage.builder()
+                                .chatId(message.getChatId())
+                                .text("Я надішлю Вам сповіщення о 11 годині.")
+                                .build());
+                        break;
+                    case "12":
+                        Notification.notificationSleepTime(12);
+                        execute(SendMessage.builder()
+                                .chatId(message.getChatId())
+                                .text("Я надішлю Вам сповіщення о 12 годині.")
+                                .build());
+                        break;
+                    case "13":
+                        Notification.notificationSleepTime(13);
+                        execute(SendMessage.builder()
+                                .chatId(message.getChatId())
+                                .text("Я надішлю Вам сповіщення о 13 годині.")
+                                .build());
+                        break;
+                    case "14":
+                        Notification.notificationSleepTime(14);
+                        execute(SendMessage.builder()
+                                .chatId(message.getChatId())
+                                .text("Я надішлю Вам сповіщення о 14 годині.")
+                                .build());
+                        break;
+                    case "15":
+                        Notification.notificationSleepTime(15);
+                        execute(SendMessage.builder()
+                                .chatId(message.getChatId())
+                                .text("Я надішлю Вам сповіщення о 15 годині.")
+                                .build());
+                        break;
+                    case "16":
+                        Notification.notificationSleepTime(16);
+                        execute(SendMessage.builder()
+                                .chatId(message.getChatId())
+                                .text("Я надішлю Вам сповіщення о 16 годині.")
+                                .build());
+                        break;
+                    case "17":
+                        Notification.notificationSleepTime(17);
+                        execute(SendMessage.builder()
+                                .chatId(message.getChatId())
+                                .text("Я надішлю Вам сповіщення о 17 годині.")
+                                .build());
+                        break;
+                    case "18":
+                        Notification.notificationSleepTime(18);
+                        execute(SendMessage.builder()
+                                .chatId(message.getChatId())
+                                .text("Я надішлю Вам сповіщення о 18 годині.")
+                                .build());
+                        break;
+                    case "-1":
+                        execute(SendMessage.builder()
+                                .chatId(message.getChatId())
+                                .text("Сповіщення вимкнені.")
+                                .build());
+                        Notification.notificationSleepTime(-1);
                         break;
                 }
-
             }
-
         }
     }
 }

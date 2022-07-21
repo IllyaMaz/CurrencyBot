@@ -15,14 +15,14 @@ import java.util.Optional;
 public class HTTPclient {
     private final static HttpClient CLIENT = HttpClient.newHttpClient();
     public final static Gson GSON = new Gson().newBuilder().setPrettyPrinting().create();
-    private final static List<Currency> ALL_RATES = new ArrayList<>();
+    private final static List<BankResponse> ALL_RATES = new ArrayList<>(150);
 
     /**
      * <B>Использование:</B><br>
      * 1) в вашем коде вызываем метод getAllExchangeRates() и получаем список,
-     * типизированный интерфейсом Currency, пример: <br><br>
-     * <B><I><font color="#e3ff00"> List&#60Currency&#62 list = HTTPclient.getAllExchangeRates();</font></I></B><br><br>
-     * 2) все необходимые методы уже вызываем непосредсвенно через доступные методы интерфейса Currency<br><br>
+     * типизированный интерфейсом BankResponse, пример: <br><br>
+     * <B><I><font color="#e3ff00"> List&#60BankResponse&#62 list = HTTPclient.getAllExchangeRates();</font></I></B><br><br>
+     * 2) все необходимые методы уже вызываем непосредсвенно через доступные методы интерфейса BankResponse<br><br>
      * <font color="#e3ff00">getBankName();<br>
      * <i>getCurrencyNumber();</i><br>
      * getCurrencyCode();<br>
@@ -32,9 +32,14 @@ public class HTTPclient {
      * кастуем к типу необходимого класса (Приватбанк,Монобанк,НБУ и тд)
      */
 
-    public static List<Currency> getAllExchangeRates() throws IOException, InterruptedException {
+    synchronized public static List<BankResponse> getAllExchangeRates() throws IOException, InterruptedException {
         if (ALL_RATES.isEmpty()) getAllBanksData();
         return ALL_RATES;
+    }
+
+    synchronized public static void updateAllExchangeRates() throws IOException, InterruptedException {
+        ALL_RATES.clear();
+        getAllBanksData();
     }
 
     private static void getAllBanksData() throws IOException, InterruptedException {
@@ -44,7 +49,7 @@ public class HTTPclient {
         addToStorage(getNBUData());
     }
 
-    private static <T extends Currency> void addToStorage(Optional<T[]> courses) {
+    private static <T extends BankResponse> void addToStorage(Optional<T[]> courses) {
         courses.ifPresent(currencyArray -> Arrays.stream(currencyArray)
                 .filter(currency -> Currencies.currs.containsKey(currency.getCurrencyCode()))
                 .forEach(ALL_RATES::add));

@@ -76,10 +76,12 @@ public class CurrencyGoItBot extends TelegramLongPollingBot {
         String data = callbackQuery.getData();
         Long chatId = message.getChatId();
         switch (data) {
+            //************************************************************************
             case "buttonGetInfo":
                 MakeOutputString makeOutputString = new MakeOutputString();
                 makeOutputString.setChatId(chatId);
                 makeOutputString.processInfo();
+            //************************************************************************
             case "buttonSettings":
                 execute(SendMessage.builder()
                         .chatId(chatId.toString())

@@ -26,7 +26,7 @@ public class MakeOutputString {
     }
 
     public void processInfo() {
-        //setChatId(1L);
+        setChatId(1L);
 //****************************************************************************************
 //        CurrencySetting currencySetting = new CurrencySetting();
 //        currencySetting.setSavedCurrency(1L, Currency.valueOf("EUR"));
@@ -44,9 +44,11 @@ public class MakeOutputString {
 //****************************************************************************************
         List<Currency> selectedCurrencys = CurrencySetting.getSavedCurrencies(chatId);
         System.out.println("Выбранные валюты: " + selectedCurrencys);
+
         NumberSimbolsAfterCommaSetting.NumberSimbolsAfterComma afterComma =
                 NumberSimbolsAfterCommaSetting.getSimbolsAfterComma(chatId);
         System.out.println("Выбранное колличество знаков после запятой: " + afterComma);
+
         Bank selectedBank = BankSetting.getSavedBank(chatId);
         System.out.println("Выбранный банк: " + selectedBank.name().toLowerCase());
         System.out.println();
@@ -64,13 +66,14 @@ public class MakeOutputString {
                 regular = "%.4f";
                 break;
         }
+
         List<BankResponse> list;
         try {
             list = HTTPclient.getAllExchangeRates();
             for (BankResponse resp: list) {
                 for (Currency currency : selectedCurrencys) {
                     if (resp.getCurrencyCode().equalsIgnoreCase(currency.name()) &&
-                        resp.getBankName().toLowerCase().contains(selectedBank.name().toLowerCase())) {
+                            resp.getBank() == selectedBank) {
                         outputString += "Банк: " + resp.getBankName() + "\n";
                         outputString += "Валюта: " + resp.getCurrencyCode() + "\n";
                         outputString += "Продажа: " + String.format(regular, resp.getSell()) + "\n";

@@ -23,7 +23,8 @@ public class HTTPclient {
      * типизированный интерфейсом BankResponse, пример: <br><br>
      * <B><I><font color="#e3ff00"> List&#60BankResponse&#62 list = HTTPclient.getAllExchangeRates();</font></I></B><br><br>
      * 2) все необходимые методы уже вызываем непосредсвенно через доступные методы интерфейса BankResponse<br><br>
-     * <font color="#e3ff00">getBankName();<br>
+     * <font color="#e3ff00">getBank();<br>
+     * getBankName()<br>
      * <i>getCurrencyNumber();</i><br>
      * getCurrencyCode();<br>
      * getBuy();<br>

@@ -13,46 +13,34 @@ import java.util.List;
 
 public class MakeOutputString {
     private String outputString = "";
-    private static Long chatId;
-    public Long getChatId() {
-        return chatId;
-    }
-    public void setChatId(Long chatId) {
-        MakeOutputString.chatId = chatId;
-    }
-    public static void main(String[] args) {
-        MakeOutputString mos = new MakeOutputString();
-        mos.processInfo();
-    }
 
-    public void processInfo() {
-        setChatId(1L);
+//    public static void main(String[] args) {
+//        MakeOutputString mos = new MakeOutputString();
+//        mos.processInfo();
+//    }
+
+    public void processInfo(Long chatId) {
 //****************************************************************************************
 //        CurrencySetting currencySetting = new CurrencySetting();
-//        currencySetting.setSavedCurrency(1L, Currency.valueOf("EUR"));
-//        currencySetting.setSavedCurrency(1L, Currency.valueOf("USD"));
+//        currencySetting.setSavedCurrency(chatId, Currency.valueOf("EUR"));
+//        currencySetting.setSavedCurrency(chatId, Currency.valueOf("USD"));
 //
 //        NumberSimbolsAfterCommaSetting numberSimbolsAfterCommaSetting
 //                = new NumberSimbolsAfterCommaSetting();
 //        numberSimbolsAfterCommaSetting
-//                .setSimbolsAfterComma(1L, NumberSimbolsAfterCommaSetting
+//                .setSimbolsAfterComma(chatId, NumberSimbolsAfterCommaSetting
 //                        .NumberSimbolsAfterComma
 //                        .valueOf("FOUR"));
 //
 //        BankSetting bankSetting = new BankSetting();
-//        bankSetting.setSavedBank(1L, Bank.MONO);
+//        bankSetting.setSavedBank(chatId, Bank.NBU);
 //****************************************************************************************
         List<Currency> selectedCurrencys = CurrencySetting.getSavedCurrencies(chatId);
-        System.out.println("Выбранные валюты: " + selectedCurrencys);
 
         NumberSimbolsAfterCommaSetting.NumberSimbolsAfterComma afterComma =
                 NumberSimbolsAfterCommaSetting.getSimbolsAfterComma(chatId);
-        System.out.println("Выбранное колличество знаков после запятой: " + afterComma);
 
         Bank selectedBank = BankSetting.getSavedBank(chatId);
-        System.out.println("Выбранный банк: " + selectedBank.name().toLowerCase());
-        System.out.println();
-
 
         String regular = "";
         switch (afterComma){
@@ -76,8 +64,13 @@ public class MakeOutputString {
                             resp.getBank() == selectedBank) {
                         outputString += "Банк: " + resp.getBankName() + "\n";
                         outputString += "Валюта: " + resp.getCurrencyCode() + "\n";
-                        outputString += "Продажа: " + String.format(regular, resp.getSell()) + "\n";
-                        outputString += "Покупка: " + String.format(regular, resp.getBuy()) + "\n";
+                        if (selectedBank == Bank.NBU) {
+                            outputString += "Офіційний курс: " + String.format(regular, resp.getBuy()) + "\n";
+                            outputString += "\n";
+                            break;
+                        }
+                        outputString += "Продаж: " + String.format(regular, resp.getSell()) + "\n";
+                        outputString += "Купівля: " + String.format(regular, resp.getBuy()) + "\n";
                         outputString += "\n";
                     }
                 }

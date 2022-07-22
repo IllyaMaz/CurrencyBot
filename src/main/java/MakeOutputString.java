@@ -26,7 +26,7 @@ public class MakeOutputString {
     }
 
     public void processInfo() {
-        setChatId(1L);
+        //setChatId(1L);
 //****************************************************************************************
 //        CurrencySetting currencySetting = new CurrencySetting();
 //        currencySetting.setSavedCurrency(1L, Currency.valueOf("EUR"));

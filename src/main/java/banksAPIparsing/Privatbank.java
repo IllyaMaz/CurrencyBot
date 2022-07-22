@@ -2,6 +2,7 @@ package banksAPIparsing;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import settings.BankSetting;
 
 @AllArgsConstructor
 @Data
@@ -34,5 +35,10 @@ public class Privatbank implements BankResponse {
     @Override
     public double getSell() {
         return sale;
+    }
+
+    @Override
+    public BankSetting.Bank getBank() {
+        return BankSetting.Bank.PRIVAT;
     }
 }

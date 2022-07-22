@@ -2,6 +2,7 @@ package banksAPIparsing;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import settings.BankSetting;
 
 import java.util.Objects;
 
@@ -45,5 +46,10 @@ public class Monobank implements BankResponse {
     public double getSell() {
         if (Objects.nonNull(rateSell)) return Double.parseDouble(rateSell);
         else return Double.parseDouble(rateCross);
+    }
+
+    @Override
+    public BankSetting.Bank getBank() {
+        return BankSetting.Bank.MONO;
     }
 }

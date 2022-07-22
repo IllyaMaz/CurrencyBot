@@ -7,15 +7,15 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class HTTPclient {
     private final static HttpClient CLIENT = HttpClient.newHttpClient();
     public final static Gson GSON = new Gson().newBuilder().setPrettyPrinting().create();
-    private final static List<BankResponse> ALL_RATES = new ArrayList<>(150);
+    private final static List<BankResponse> ALL_RATES = new CopyOnWriteArrayList<>();
 
     /**
      * <B>Использование:</B><br>
@@ -32,12 +32,12 @@ public class HTTPclient {
      * кастуем к типу необходимого класса (Приватбанк,Монобанк,НБУ и тд)
      */
 
-    synchronized public static List<BankResponse> getAllExchangeRates() throws IOException, InterruptedException {
+    public static List<BankResponse> getAllExchangeRates() throws IOException, InterruptedException {
         if (ALL_RATES.isEmpty()) getAllBanksData();
         return ALL_RATES;
     }
 
-    synchronized public static void updateAllExchangeRates() throws IOException, InterruptedException {
+    public static void updateAllExchangeRates() throws IOException, InterruptedException {
         ALL_RATES.clear();
         getAllBanksData();
     }

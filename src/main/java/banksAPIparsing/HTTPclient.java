@@ -34,7 +34,7 @@ public class HTTPclient {
 
     synchronized public static List<BankResponse> getAllExchangeRates() throws IOException, InterruptedException {
         if (ALL_RATES.isEmpty()) getAllBanksData();
-        return ALL_RATES;
+        return new ArrayList<>(ALL_RATES);
     }
 
     synchronized public static void updateAllExchangeRates() throws IOException, InterruptedException {

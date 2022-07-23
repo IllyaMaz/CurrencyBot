@@ -7,6 +7,7 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -34,26 +35,24 @@ public class HTTPclient {
      */
 
     public static List<BankResponse> getAllExchangeRates() throws IOException, InterruptedException {
-        if (ALL_RATES.isEmpty()) getAllBanksData();
+        if (ALL_RATES.isEmpty()) updateAllExchangeRates();
         return ALL_RATES;
     }
 
     public static void updateAllExchangeRates() throws IOException, InterruptedException {
+        List<BankResponse> lastUpdates = new ArrayList<>(150);
+        addToStorage(getPrivatbankData(4),lastUpdates);
+        addToStorage(getPrivatbankData(3),lastUpdates);
+        addToStorage(getMonobankData(),lastUpdates);
+        addToStorage(getNBUData(),lastUpdates);
         ALL_RATES.clear();
-        getAllBanksData();
+        ALL_RATES.addAll(lastUpdates);
     }
 
-    private static void getAllBanksData() throws IOException, InterruptedException {
-        addToStorage(getPrivatbankData(4));
-        addToStorage(getPrivatbankData(3));
-        addToStorage(getMonobankData());
-        addToStorage(getNBUData());
-    }
-
-    private static <T extends BankResponse> void addToStorage(Optional<T[]> courses) {
+    private static <T extends BankResponse> void addToStorage(Optional<T[]> courses, List<BankResponse> list) {
         courses.ifPresent(currencyArray -> Arrays.stream(currencyArray)
                 .filter(currency -> Currencies.currs.containsKey(currency.getCurrencyCode()))
-                .forEach(ALL_RATES::add));
+                .forEach(list::add));
     }
 
     private static Optional<Privatbank[]> getPrivatbankData(int coursId) throws IOException, InterruptedException {
@@ -66,7 +65,6 @@ public class HTTPclient {
             return result;
         }
     }
-
 
     private static Optional<Monobank[]> getMonobankData() throws IOException, InterruptedException {
         Optional<Monobank[]> result = Optional.empty();

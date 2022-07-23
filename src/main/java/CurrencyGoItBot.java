@@ -14,7 +14,7 @@ import settings.NumberSimbolsAfterCommaSetting;
 import java.text.DecimalFormat;
 import java.util.Optional;
 
-public class CurrencyGoItBot extends TelegramLongPollingBot implements DecimalFormatable {
+public class CurrencyGoItBot extends TelegramLongPollingBot {
     BankSetting bankSetting = new BankSetting();
     NumberSimbolsAfterCommaSetting digitsSetting = new NumberSimbolsAfterCommaSetting();
     CurrencySetting currencySetting = new CurrencySetting();

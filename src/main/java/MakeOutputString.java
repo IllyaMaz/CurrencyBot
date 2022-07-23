@@ -1,61 +1,85 @@
 import banksAPIparsing.*;
 import banksAPIparsing.BankResponse;
+
 import settings.*;
 import settings.BankSetting.*;
 import settings.CurrencySetting;
+import settings.CurrencySetting.*;
+
+import settings.NumberSimbolsAfterCommaSetting;
 
 import java.io.IOException;
 import java.util.List;
 
 public class MakeOutputString {
+    private String outputString = "";
 
-//    class Output() {
-//        String
+//    public static void main(String[] args) {
+//        MakeOutputString mos = new MakeOutputString();
+//        mos.processInfo();
 //    }
 
-    private String outputString = "";
-    private Bank bank;
-    private String currency;
-    private String sell;
-    private String buye;
+    public void processInfo(Long chatId) {
+//****************************************************************************************
+//        CurrencySetting currencySetting = new CurrencySetting();
+//        currencySetting.setSavedCurrency(chatId, Currency.valueOf("EUR"));
+//        currencySetting.setSavedCurrency(chatId, Currency.valueOf("USD"));
+//
+//        NumberSimbolsAfterCommaSetting numberSimbolsAfterCommaSetting
+//                = new NumberSimbolsAfterCommaSetting();
+//        numberSimbolsAfterCommaSetting
+//                .setSimbolsAfterComma(chatId, NumberSimbolsAfterCommaSetting
+//                        .NumberSimbolsAfterComma
+//                        .valueOf("FOUR"));
+//
+//        BankSetting bankSetting = new BankSetting();
+//        bankSetting.setSavedBank(chatId, Bank.NBU);
+//****************************************************************************************
+        List<Currency> selectedCurrencys = CurrencySetting.getSavedCurrencies(chatId);
 
-    public Long getChatId() {
-        return chatId;
-    }
+        NumberSimbolsAfterCommaSetting.NumberSimbolsAfterComma afterComma =
+                NumberSimbolsAfterCommaSetting.getSimbolsAfterComma(chatId);
 
-    public void setChatId(Long chatId) {
-        this.chatId = chatId;
-    }
+        Bank selectedBank = BankSetting.getSavedBank(chatId);
 
-    private static Long chatId;
+        String regular = "";
+        switch (afterComma){
+            case TWO:
+                regular = "%.2f";
+                break;
+            case THREE:
+                regular = "%.3f";
+                break;
+            case FOUR:
+                regular = "%.4f";
+                break;
+        }
 
-    public static void main(String[] args) {
         List<BankResponse> list;
         try {
             list = HTTPclient.getAllExchangeRates();
+            for (BankResponse resp: list) {
+                for (Currency currency : selectedCurrencys) {
+                    if (resp.getCurrencyCode().equalsIgnoreCase(currency.name()) &&
+                            resp.getBank() == selectedBank) {
+                        outputString += "Банк: " + resp.getBankName() + "\n";
+                        outputString += "Валюта: " + resp.getCurrencyCode() + "\n";
+                        if (selectedBank == Bank.NBU) {
+                            outputString += "Офіційний курс: " + String.format(regular, resp.getBuy()) + "\n";
+                            outputString += "\n";
+                            break;
+                        }
+                        outputString += "Продаж: " + String.format(regular, resp.getSell()) + "\n";
+                        outputString += "Купівля: " + String.format(regular, resp.getBuy()) + "\n";
+                        outputString += "\n";
+                    }
+                }
+            }
         } catch (IOException e) {
             throw new RuntimeException(e);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
-//        for(Currency currency : list) {
-//            System.out.println("\n"
-//                    + "Банк : " + currency.getBankName() + "\n"
-//                    + "Валюта : " + currency.getCurrencyCode() + "\n"
-//                    + "Продажа : " + currency.getBuy() + "\n"
-//                    + "Покупка : " + currency.getSell() + "\n"
-//            );
-//        }
-
-        list.stream().filter(x -> x.getCurrencyCode().equals("USD"))
-                .map(BankResponse::getBuy).forEach(System.out::println);
-    }
-
-    public void processInfo() {
-        Bank currBank = BankSetting.getSavedBank(chatId);
-        List<CurrencySetting.Currency> currency = CurrencySetting.getSavedCurrencies(chatId);
-        NumberSimbolsAfterCommaSetting.NumberSimbolsAfterComma afterComma =
-                NumberSimbolsAfterCommaSetting.getSimbolsAfterComma(chatId);
-        System.out.println("CurrBank: " + currBank.toString());
+        System.out.println(outputString);
     }
 }

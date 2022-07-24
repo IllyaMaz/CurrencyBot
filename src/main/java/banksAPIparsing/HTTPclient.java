@@ -39,12 +39,11 @@ public class HTTPclient {
     }
 
     public static void updateAllExchangeRates() throws IOException, InterruptedException {
-        List<BankResponse> allLastUpdates = new ArrayList<>(20);
+        List<BankResponse> allLastUpdates = new ArrayList<>(ALL_RATES);
         addUpdate(getPrivatbankData(4),allLastUpdates);
         addUpdate(getPrivatbankData(3),allLastUpdates);
         addUpdate(getMonobankData(),allLastUpdates);
         addUpdate(getNBUData(),allLastUpdates);
-        System.out.println(allLastUpdates.size());
         synchronized (HTTPclient.class) {
             ALL_RATES.clear();
             ALL_RATES.addAll(allLastUpdates);
@@ -54,6 +53,7 @@ public class HTTPclient {
     private static <T extends BankResponse> void addUpdate(Optional<T[]> courses, List<BankResponse> list) {
         courses.ifPresent(currencyArray -> Arrays.stream(currencyArray)
                 .filter(currency -> Currencies.currs.containsKey(currency.getCurrencyCode()))
+                .peek(list::remove)
                 .forEach(list::add));
     }
 

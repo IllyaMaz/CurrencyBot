@@ -2,20 +2,22 @@ package banksAPIparsing;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import settings.BankSetting;
 
 import java.util.Objects;
 
 @AllArgsConstructor
 @Data
+@EqualsAndHashCode
 
 public class Monobank implements BankResponse {
-    private String currencyCodeA;
-    private String currencyCodeB;
-    private String date;
-    private String rateSell;
-    private String rateBuy;
-    private String rateCross;
+    @EqualsAndHashCode.Include private String currencyCodeA;
+    @EqualsAndHashCode.Include private String currencyCodeB;
+    @EqualsAndHashCode.Exclude private String date;
+    @EqualsAndHashCode.Exclude private String rateSell;
+    @EqualsAndHashCode.Exclude private String rateBuy;
+    @EqualsAndHashCode.Exclude private String rateCross;
 
     @Override
     public String getBankName() {

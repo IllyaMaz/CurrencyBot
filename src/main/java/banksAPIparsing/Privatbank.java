@@ -2,16 +2,18 @@ package banksAPIparsing;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import settings.BankSetting;
 
 @AllArgsConstructor
 @Data
+@EqualsAndHashCode
 
 public class Privatbank implements BankResponse {
     private String ccy;
     private String base_ccy;
-    private double buy;
-    private double sale;
+    @EqualsAndHashCode.Exclude private double buy;
+    @EqualsAndHashCode.Exclude private double sale;
 
     @Override
     public String getBankName() {

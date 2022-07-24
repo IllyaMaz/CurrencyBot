@@ -2,13 +2,15 @@ package banksAPIparsing;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import settings.BankSetting;
 
 @AllArgsConstructor
 @Data
+@EqualsAndHashCode
 
 public class NBU implements BankResponse {
-    private String r030;
+    @EqualsAndHashCode.Include private String r030;
     private String txt;
     private String rate;
     private String cc;

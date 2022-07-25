@@ -64,6 +64,7 @@ public class HTTPclient {
                     sendGETRequest("https://api.privatbank.ua/p24api/pubinfo?json&exchange&coursid=" + coursId),
                     Privatbank[].class));
         } catch (RuntimeException e) {
+            System.out.println("\033[1;31m" + "Can't get Privatbank data" + "\033[0m");
             return result;
         }
     }

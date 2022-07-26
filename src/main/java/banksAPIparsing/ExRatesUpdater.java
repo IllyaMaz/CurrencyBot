@@ -7,7 +7,7 @@ import java.io.IOException;
 @Data
 
 public class ExRatesUpdater implements Runnable{
-    private long sleepMinutes = 1;
+    private long sleepMinutes = 3;
 
     @Override
     public void run() {

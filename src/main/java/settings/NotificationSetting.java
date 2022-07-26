@@ -1,7 +1,5 @@
 package settings;
 
-import com.sun.tools.javac.Main;
-
 import java.util.HashMap;
 import java.util.Map;
 

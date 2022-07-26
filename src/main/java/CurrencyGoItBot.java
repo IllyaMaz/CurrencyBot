@@ -77,10 +77,16 @@ public class CurrencyGoItBot extends TelegramLongPollingBot implements DecimalFo
         String data = callbackQuery.getData();
         Long chatId = message.getChatId();
         switch (data) {
+            //************************************************************************
             case "buttonGetInfo":
                 MakeOutputString makeOutputString = new MakeOutputString();
-                makeOutputString.setChatId(chatId);
-                makeOutputString.processInfo();
+                String output = makeOutputString.processInfo(chatId);
+                execute(SendMessage.builder()
+                        .chatId(chatId.toString())
+                        .text(output)
+                        .build());
+                break;
+            //************************************************************************
             case "buttonSettings":
                 execute(SendMessage.builder()
                         .chatId(chatId.toString())

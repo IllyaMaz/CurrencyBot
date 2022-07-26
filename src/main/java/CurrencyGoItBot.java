@@ -147,7 +147,7 @@ public class CurrencyGoItBot extends TelegramLongPollingBot {
 
             case "USD":
             case "EUR":
-            case "RUB":
+            case "GBP":
                 currencySetting.setSavedCurrency(chatId, CurrencySetting.Currency.valueOf(callbackQuery.getData()));
 
                 execute(EditMessageReplyMarkup.builder()

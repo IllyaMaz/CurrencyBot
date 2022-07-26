@@ -14,7 +14,7 @@ public class CurrencySetting {
     public enum Currency {
         USD,
         EUR,
-        RUB
+        GBP
     }
 
 
@@ -54,8 +54,8 @@ public class CurrencySetting {
         return  (getSavedCurrencies(chatId).contains(CurrencySetting.Currency.EUR)) ? "EUR" + " ✅" : "EUR" ;
     }
 
-    String setButtonRUBName(Long chatId) {
-        return  (getSavedCurrencies(chatId).contains(CurrencySetting.Currency.RUB)) ? "RUB" + " ✅" : "RUB" ;
+    String setButtonGBPName(Long chatId) {
+        return  (getSavedCurrencies(chatId).contains(CurrencySetting.Currency.GBP)) ? "GBP" + " ✅" : "GBP" ;
     }
 
     public static InlineKeyboardMarkup getCurrenciesButtons(Long chatId) {
@@ -67,16 +67,16 @@ public class CurrencySetting {
         InlineKeyboardButton buttonEUR = new InlineKeyboardButton();
         buttonEUR.setText(new CurrencySetting().setButtonEURName(chatId));
         buttonEUR.setCallbackData("EUR");
-        InlineKeyboardButton buttonRUB = new InlineKeyboardButton();
-        buttonRUB.setText(new CurrencySetting().setButtonRUBName(chatId));
-        buttonRUB.setCallbackData("RUB");
+        InlineKeyboardButton buttonGBP = new InlineKeyboardButton();
+        buttonGBP.setText(new CurrencySetting().setButtonGBPName(chatId));
+        buttonGBP.setCallbackData("GBP");
 
         List<InlineKeyboardButton> keyboardButtonsRow1 = new ArrayList<>();
         keyboardButtonsRow1.add(buttonUSD);
         List<InlineKeyboardButton> keyboardButtonsRow2 = new ArrayList<>();
         keyboardButtonsRow2.add(buttonEUR);
         List<InlineKeyboardButton> keyboardButtonsRow3 = new ArrayList<>();
-        keyboardButtonsRow3.add(buttonRUB);
+        keyboardButtonsRow3.add(buttonGBP);
 
         List<List<InlineKeyboardButton>> rowList = new ArrayList<>();
         rowList.add(keyboardButtonsRow1);

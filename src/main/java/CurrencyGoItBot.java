@@ -147,6 +147,11 @@ public class CurrencyGoItBot extends TelegramLongPollingBot {
                         .messageId(message.getMessageId())
                         .replyMarkup(NumberSimbolsAfterCommaSetting.getDigitsButtons(chatId))
                         .build());
+                execute(SendMessage.builder()
+                        .chatId(message.getChatId().toString())
+                        .text("Кількість десяткових розрядів збережено")
+                        .replyMarkup(Button.getReturnButton())
+                        .build());
 
                 break;
 

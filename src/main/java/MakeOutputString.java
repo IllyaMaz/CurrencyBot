@@ -14,27 +14,8 @@ import java.util.List;
 public class MakeOutputString {
     private String outputString = "";
 
-//    public static void main(String[] args) {
-//        MakeOutputString mos = new MakeOutputString();
-//        mos.processInfo();
-//    }
 
     public String processInfo(Long chatId) {
-//****************************************************************************************
-//        CurrencySetting currencySetting = new CurrencySetting();
-//        currencySetting.setSavedCurrency(chatId, Currency.valueOf("EUR"));
-//        currencySetting.setSavedCurrency(chatId, Currency.valueOf("USD"));
-//
-//        NumberSimbolsAfterCommaSetting numberSimbolsAfterCommaSetting
-//                = new NumberSimbolsAfterCommaSetting();
-//        numberSimbolsAfterCommaSetting
-//                .setSimbolsAfterComma(chatId, NumberSimbolsAfterCommaSetting
-//                        .NumberSimbolsAfterComma
-//                        .valueOf("FOUR"));
-//
-//        BankSetting bankSetting = new BankSetting();
-//        bankSetting.setSavedBank(chatId, Bank.NBU);
-//****************************************************************************************
         List<Currency> selectedCurrencys = CurrencySetting.getSavedCurrencies(chatId);
 
         NumberSimbolsAfterCommaSetting.NumberSimbolsAfterComma afterComma =

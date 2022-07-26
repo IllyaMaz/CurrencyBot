@@ -4,15 +4,12 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageReplyMarkup;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.Message;
-import org.telegram.telegrambots.meta.api.objects.MessageEntity;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import settings.BankSetting;
 import settings.CurrencySetting;
 import settings.NumberSimbolsAfterCommaSetting;
 
-import java.text.DecimalFormat;
-import java.util.Optional;
 
 public class CurrencyGoItBot extends TelegramLongPollingBot implements DecimalFormatable {
     BankSetting bankSetting = new BankSetting();
@@ -77,7 +74,6 @@ public class CurrencyGoItBot extends TelegramLongPollingBot implements DecimalFo
         String data = callbackQuery.getData();
         Long chatId = message.getChatId();
         switch (data) {
-            //************************************************************************
             case "buttonGetInfo":
                 MakeOutputString makeOutputString = new MakeOutputString();
                 String output = makeOutputString.processInfo(chatId);
@@ -86,7 +82,6 @@ public class CurrencyGoItBot extends TelegramLongPollingBot implements DecimalFo
                         .text(output)
                         .build());
                 break;
-            //************************************************************************
             case "buttonSettings":
                 execute(SendMessage.builder()
                         .chatId(chatId.toString())

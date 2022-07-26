@@ -19,7 +19,7 @@ public class MakeOutputString {
 //        mos.processInfo();
 //    }
 
-    public void processInfo(Long chatId) {
+    public String processInfo(Long chatId) {
 //****************************************************************************************
 //        CurrencySetting currencySetting = new CurrencySetting();
 //        currencySetting.setSavedCurrency(chatId, Currency.valueOf("EUR"));
@@ -80,6 +80,6 @@ public class MakeOutputString {
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
-        System.out.println(outputString);
+        return  outputString;
     }
 }

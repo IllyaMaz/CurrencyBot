@@ -37,7 +37,6 @@ public class NotificationSetting {
 
     public static void setNotification(long chatId, Notification notification) {
         notificationMap.put(chatId, notification);
-
     }
 
     public Notification getNotification(long chatId) {

@@ -80,6 +80,7 @@ public class CurrencyGoItBot extends TelegramLongPollingBot {
                 execute(SendMessage.builder()
                         .chatId(chatId.toString())
                         .text(output)
+                        .replyMarkup(Button.getInitialButtons())
                         .build());
                 break;
             case "buttonSettings":

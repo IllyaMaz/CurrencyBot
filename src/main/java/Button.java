@@ -105,6 +105,27 @@ public class Button {
         return notificationMarkup;
     }
 
+    static ReplyKeyboardMarkup getReturnButton() {
+        ReplyKeyboardMarkup notificationMarkup = new ReplyKeyboardMarkup();
+        notificationMarkup.setResizeKeyboard(true);
+        notificationMarkup.setOneTimeKeyboard(true);
+
+        List<KeyboardRow> keyboard = new ArrayList<>();
+
+        KeyboardRow keyboardFirstRow = new KeyboardRow();
+        keyboardFirstRow.add(new KeyboardButton("Повернутися"));
+
+
+
+        keyboard.add(keyboardFirstRow);
+
+
+        notificationMarkup.setKeyboard(keyboard);
+
+
+        return notificationMarkup;
+    }
+
 }
 
 

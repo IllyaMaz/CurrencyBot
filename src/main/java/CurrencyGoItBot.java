@@ -129,6 +129,11 @@ public class CurrencyGoItBot extends TelegramLongPollingBot {
                         .messageId(message.getMessageId())
                         .replyMarkup(BankSetting.getBankButtons(chatId))
                         .build());
+                execute(SendMessage.builder()
+                        .chatId(message.getChatId().toString())
+                        .text("Банк обрано")
+                        .replyMarkup(Button.getReturnButton())
+                        .build());
 
                 break;
 
@@ -155,6 +160,11 @@ public class CurrencyGoItBot extends TelegramLongPollingBot {
                         .messageId(message.getMessageId())
                         .replyMarkup(CurrencySetting.getCurrenciesButtons(chatId))
                         .build());
+                execute(SendMessage.builder()
+                        .chatId(message.getChatId().toString())
+                        .text("Валюту обрано")
+                        .replyMarkup(Button.getReturnButton())
+                        .build());
 
                 break;
 
@@ -165,6 +175,13 @@ public class CurrencyGoItBot extends TelegramLongPollingBot {
     private void handleMessage(Message message) throws TelegramApiException {
         String text = message.getText();
         switch (text) {
+            case "Повернутися":
+                execute(SendMessage.builder()
+                        .chatId(message.getChatId().toString())
+                        .text("Оберить бажану функцию")
+                        .replyMarkup(Button.getInitialButtons())
+                        .build());
+                break;
             case "9":
                 execute(SendMessage.builder()
                         .chatId(message.getChatId().toString())

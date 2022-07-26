@@ -41,7 +41,7 @@ public class HTTPclient {
     public static void updateAllExchangeRates() throws IOException, InterruptedException {
         List<BankResponse> allLastUpdates = new ArrayList<>(ALL_RATES);
         addUpdate(getPrivatbankData(4),allLastUpdates);
-        addUpdate(getPrivatbankData(3),allLastUpdates);
+        addUpdate(getPrivatbankData(5),allLastUpdates);
         addUpdate(getMonobankData(),allLastUpdates);
         addUpdate(getNBUData(),allLastUpdates);
         synchronized (HTTPclient.class) {

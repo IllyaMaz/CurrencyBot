@@ -11,11 +11,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class HTTPclient {
     private final static HttpClient CLIENT = HttpClient.newHttpClient();
     public final static Gson GSON = new Gson().newBuilder().setPrettyPrinting().create();
-    private final static List<BankResponse> ALL_RATES = new ArrayList<>(150);
+    private final static List<BankResponse> ALL_RATES = new CopyOnWriteArrayList<>();
 
     /**
      * <B>Использование:</B><br>
@@ -23,7 +24,8 @@ public class HTTPclient {
      * типизированный интерфейсом BankResponse, пример: <br><br>
      * <B><I><font color="#e3ff00"> List&#60BankResponse&#62 list = HTTPclient.getAllExchangeRates();</font></I></B><br><br>
      * 2) все необходимые методы уже вызываем непосредсвенно через доступные методы интерфейса BankResponse<br><br>
-     * <font color="#e3ff00">getBankName();<br>
+     * <font color="#e3ff00">getBank();<br>
+     * getBankName()<br>
      * <i>getCurrencyNumber();</i><br>
      * getCurrencyCode();<br>
      * getBuy();<br>
@@ -32,27 +34,27 @@ public class HTTPclient {
      * кастуем к типу необходимого класса (Приватбанк,Монобанк,НБУ и тд)
      */
 
-    synchronized public static List<BankResponse> getAllExchangeRates() throws IOException, InterruptedException {
-        if (ALL_RATES.isEmpty()) getAllBanksData();
-        return new ArrayList<>(ALL_RATES);
+    public static List<BankResponse> getAllExchangeRates() throws IOException, InterruptedException {
+        return ALL_RATES;
     }
 
-    synchronized public static void updateAllExchangeRates() throws IOException, InterruptedException {
-        ALL_RATES.clear();
-        getAllBanksData();
+    public static void updateAllExchangeRates() throws IOException, InterruptedException {
+        List<BankResponse> allLastUpdates = new ArrayList<>(ALL_RATES);
+        addUpdate(getPrivatbankData(4),allLastUpdates);
+        addUpdate(getPrivatbankData(3),allLastUpdates);
+        addUpdate(getMonobankData(),allLastUpdates);
+        addUpdate(getNBUData(),allLastUpdates);
+        synchronized (HTTPclient.class) {
+            ALL_RATES.clear();
+            ALL_RATES.addAll(allLastUpdates);
+        }
     }
 
-    private static void getAllBanksData() throws IOException, InterruptedException {
-        addToStorage(getPrivatbankData(4));
-        addToStorage(getPrivatbankData(3));
-        addToStorage(getMonobankData());
-        addToStorage(getNBUData());
-    }
-
-    private static <T extends BankResponse> void addToStorage(Optional<T[]> courses) {
+    private static <T extends BankResponse> void addUpdate(Optional<T[]> courses, List<BankResponse> list) {
         courses.ifPresent(currencyArray -> Arrays.stream(currencyArray)
                 .filter(currency -> Currencies.currs.containsKey(currency.getCurrencyCode()))
-                .forEach(ALL_RATES::add));
+                .peek(list::remove)
+                .forEach(list::add));
     }
 
     private static Optional<Privatbank[]> getPrivatbankData(int coursId) throws IOException, InterruptedException {
@@ -62,10 +64,10 @@ public class HTTPclient {
                     sendGETRequest("https://api.privatbank.ua/p24api/pubinfo?json&exchange&coursid=" + coursId),
                     Privatbank[].class));
         } catch (RuntimeException e) {
+            System.out.println("\033[1;31m" + "Can't get Privatbank data" + "\033[0m");
             return result;
         }
     }
-
 
     private static Optional<Monobank[]> getMonobankData() throws IOException, InterruptedException {
         Optional<Monobank[]> result = Optional.empty();

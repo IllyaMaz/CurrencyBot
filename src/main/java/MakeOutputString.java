@@ -43,6 +43,12 @@ public class MakeOutputString {
                 for (Currency currency : selectedCurrencys) {
                     if (resp.getCurrencyCode().equalsIgnoreCase(currency.name()) &&
                             resp.getBank() == selectedBank) {
+                        if (resp.getBank() == Bank.MONO) {
+                            Monobank mono = (Monobank) resp;
+                            if (!mono.getCurrencyCodeB().equals("980")) {
+                                continue;
+                            }
+                        }
                         outputString += "Банк: " + resp.getBankName() + "\n";
                         outputString += "Валюта: " + resp.getCurrencyCode() + "\n";
                         if (selectedBank == Bank.NBU) {

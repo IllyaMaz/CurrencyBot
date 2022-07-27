@@ -7,6 +7,7 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -14,7 +15,7 @@ import java.util.Optional;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class HTTPclient {
-    private final static HttpClient CLIENT = HttpClient.newHttpClient();
+    private final static HttpClient CLIENT = HttpClient.newBuilder().followRedirects(HttpClient.Redirect.ALWAYS).build();
     public final static Gson GSON = new Gson().newBuilder().setPrettyPrinting().create();
     private final static List<BankResponse> ALL_RATES = new CopyOnWriteArrayList<>();
 
@@ -95,6 +96,7 @@ public class HTTPclient {
     private static String sendGETRequest(String path) throws IOException, InterruptedException {
         var request = HttpRequest.newBuilder()
                 .uri(URI.create(path))
+                .timeout(Duration.ofSeconds(3))
                 .GET()
                 .headers("Content-Type", "application/json")
                 .build();

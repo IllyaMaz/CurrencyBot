@@ -173,6 +173,13 @@ public class CurrencyGoItBot extends TelegramLongPollingBot {
     private void handleMessage(Message message) throws TelegramApiException {
         String text = message.getText();
         switch (text) {
+            case "Повернутися":
+                execute(SendMessage.builder()
+                        .chatId(message.getChatId().toString())
+                        .text("Оберіть бажану функцію.")
+                        .replyMarkup(Button.getInitialButtons())
+                        .build());
+                break;
             case "9":
                 execute(SendMessage.builder()
                         .chatId(message.getChatId().toString())

@@ -7,6 +7,7 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -14,7 +15,7 @@ import java.util.Optional;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class HTTPclient {
-    private final static HttpClient CLIENT = HttpClient.newHttpClient();
+    private final static HttpClient CLIENT = HttpClient.newBuilder().followRedirects(HttpClient.Redirect.ALWAYS).build();
     public final static Gson GSON = new Gson().newBuilder().setPrettyPrinting().create();
     private final static List<BankResponse> ALL_RATES = new CopyOnWriteArrayList<>();
 
@@ -38,7 +39,7 @@ public class HTTPclient {
         return ALL_RATES;
     }
 
-    public static void updateAllExchangeRates() throws IOException, InterruptedException {
+    public static void updateAllExchangeRates() {
         List<BankResponse> allLastUpdates = new ArrayList<>(ALL_RATES);
         addUpdate(getPrivatbankData(4),allLastUpdates);
         addUpdate(getPrivatbankData(5),allLastUpdates);
@@ -57,7 +58,7 @@ public class HTTPclient {
                 .forEach(list::add));
     }
 
-    private static Optional<Privatbank[]> getPrivatbankData(int coursId) throws IOException, InterruptedException {
+    private static Optional<Privatbank[]> getPrivatbankData(int coursId) {
         Optional<Privatbank[]> result = Optional.empty();
         try {
             return Optional.of(GSON.fromJson(
@@ -69,7 +70,7 @@ public class HTTPclient {
         }
     }
 
-    private static Optional<Monobank[]> getMonobankData() throws IOException, InterruptedException {
+    private static Optional<Monobank[]> getMonobankData() {
         Optional<Monobank[]> result = Optional.empty();
         try {
             return Optional.of(GSON.fromJson(
@@ -81,7 +82,7 @@ public class HTTPclient {
         }
     }
 
-    private static Optional<NBU[]> getNBUData() throws IOException, InterruptedException {
+    private static Optional<NBU[]> getNBUData() {
         Optional<NBU[]> result = Optional.empty();
         try {
             String HTMLBody = sendGETRequest("https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?json");
@@ -92,12 +93,18 @@ public class HTTPclient {
         }
     }
 
-    private static String sendGETRequest(String path) throws IOException, InterruptedException {
+    private static String sendGETRequest(String path) {
         var request = HttpRequest.newBuilder()
                 .uri(URI.create(path))
+                .timeout(Duration.ofSeconds(3))
                 .GET()
                 .headers("Content-Type", "application/json")
                 .build();
-        return CLIENT.send(request, HttpResponse.BodyHandlers.ofString()).body();
+        try {
+            return CLIENT.send(request, HttpResponse.BodyHandlers.ofString()).body();
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+            return "";
+        }
     }
 }

@@ -136,7 +136,8 @@ public class CurrencyGoItBot extends TelegramLongPollingBot {
             case "TWO":
             case "THREE":
             case "FOUR":
-                digitsSetting.setSimbolsAfterComma(chatId, NumberSimbolsAfterCommaSetting.NumberSimbolsAfterComma.valueOf(callbackQuery.getData()));
+                digitsSetting.setSimbolsAfterComma(chatId, NumberSimbolsAfterCommaSetting.NumberSimbolsAfterComma
+                        .valueOf(callbackQuery.getData()));
 
                 execute(EditMessageReplyMarkup.builder()
                         .chatId(chatId)

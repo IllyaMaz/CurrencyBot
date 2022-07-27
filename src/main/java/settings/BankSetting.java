@@ -3,12 +3,26 @@ package settings;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 
+import java.io.Externalizable;
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class BankSetting {
+public class BankSetting implements Externalizable {
+    @Override
+    public void writeExternal(ObjectOutput objectOutput) throws IOException {
+        objectOutput.writeObject(savedBank);
+    }
+
+    @Override
+    public void readExternal(ObjectInput objectInput) throws IOException, ClassNotFoundException {
+        savedBank = (Map<Long, Bank>) objectInput.readObject();
+    }
+
     public enum Bank{
         MONO,
         PRIVAT,

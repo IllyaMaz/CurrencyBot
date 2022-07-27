@@ -8,13 +8,30 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import settings.*;
 
-public class CurrencyGoItBot extends TelegramLongPollingBot {
+import java.io.*;
+
+public class CurrencyGoItBot extends TelegramLongPollingBot  implements Serializable {
     BankSetting bankSetting = new BankSetting();
     NumberSimbolsAfterCommaSetting digitsSetting = new NumberSimbolsAfterCommaSetting();
     CurrencySetting currencySetting = new CurrencySetting();
 
     protected CurrencyGoItBot(DefaultBotOptions options) {
         super(options);
+        try {
+            methodRead();
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void methodWrite() throws IOException {
+        ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream("Externals.out"));
+        out.writeObject(bankSetting);
+        out.close();
+
+    }private void methodRead() throws IOException, ClassNotFoundException {
+        ObjectInputStream in = new ObjectInputStream(new FileInputStream("Externals.out"));
+        bankSetting = (BankSetting) in.readObject();
     }
 
     @Override
@@ -78,6 +95,11 @@ public class CurrencyGoItBot extends TelegramLongPollingBot {
                         .text(output)
                         .replyMarkup(Button.getInitialButtons())
                         .build());
+                try {
+                    methodWrite();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 break;
             case "buttonSettings":
                 execute(SendMessage.builder()

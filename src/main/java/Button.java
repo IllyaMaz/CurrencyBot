@@ -4,6 +4,7 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMar
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardButton;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
+import settings.BankSetting;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -68,42 +69,6 @@ public class Button {
         return settingsMarkup;
     }
 
-    static ReplyKeyboardMarkup getNotificationButtons() {
-        ReplyKeyboardMarkup notificationMarkup = new ReplyKeyboardMarkup();
-        notificationMarkup.setResizeKeyboard(true);
-        notificationMarkup.setOneTimeKeyboard(true);
-
-        List<KeyboardRow> keyboard = new ArrayList<>();
-
-        KeyboardRow keyboardFirstRow = new KeyboardRow();
-        keyboardFirstRow.add(new KeyboardButton("9"));
-        keyboardFirstRow.add(new KeyboardButton("10"));
-        keyboardFirstRow.add(new KeyboardButton("11"));
-
-        KeyboardRow keyboardSecondRow = new KeyboardRow();
-        keyboardSecondRow.add(new KeyboardButton("12"));
-        keyboardSecondRow.add(new KeyboardButton("13"));
-        keyboardSecondRow.add(new KeyboardButton("14"));
-
-        KeyboardRow keyboardThirdRow = new KeyboardRow();
-        keyboardThirdRow.add(new KeyboardButton("15"));
-        keyboardThirdRow.add(new KeyboardButton("16"));
-        keyboardThirdRow.add(new KeyboardButton("17"));
-
-        KeyboardRow keyboardFourthRow = new KeyboardRow();
-        keyboardFourthRow.add(new KeyboardButton("18"));
-        keyboardFourthRow.add(new KeyboardButton("Вимкнути сповіщення"));
-
-        keyboard.add(keyboardFirstRow);
-        keyboard.add(keyboardSecondRow);
-        keyboard.add(keyboardThirdRow);
-        keyboard.add(keyboardFourthRow);
-
-        notificationMarkup.setKeyboard(keyboard);
-
-
-        return notificationMarkup;
-    }
 
     static ReplyKeyboardMarkup getReturnButton() {
         ReplyKeyboardMarkup notificationMarkup = new ReplyKeyboardMarkup();

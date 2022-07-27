@@ -8,6 +8,7 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import settings.BankSetting;
 import settings.CurrencySetting;
+import settings.NotificationSetting;
 import settings.NumberSimbolsAfterCommaSetting;
 
 
@@ -115,7 +116,7 @@ public class CurrencyGoItBot extends TelegramLongPollingBot {
                 execute(SendMessage.builder()
                         .chatId(chatId.toString())
                         .text("Виберіть час сповіщення")
-                        .replyMarkup(Button.getNotificationButtons())
+                        .replyMarkup(NotificationSetting.getNotificationButtons(chatId))
                         .build());
                 break;
 
@@ -183,14 +184,14 @@ public class CurrencyGoItBot extends TelegramLongPollingBot {
             case "Повернутися":
                 execute(SendMessage.builder()
                         .chatId(message.getChatId().toString())
-                        .text("Оберить бажану функцию")
+                        .text("Оберіть бажану функцію")
                         .replyMarkup(Button.getInitialButtons())
                         .build());
                 break;
             case "9":
                 execute(SendMessage.builder()
                         .chatId(message.getChatId().toString())
-                        .text("Оповещение прилетит в 9 утра.")
+                        .text("Сповіщення прийде о 9 ранку.")
                         .build());
         }
     }

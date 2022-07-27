@@ -174,13 +174,10 @@ public class CurrencyGoItBot extends TelegramLongPollingBot {
 
     public void sendNotification(long chatId) throws TelegramApiException {
         MakeOutputString makeOutputString = new MakeOutputString();
-        execute(SendMessage.builder()
-                .chatId(String.valueOf(chatId))
-                .text(makeOutputString.processInfo(chatId))
-                .replyMarkup(Button.getInitialButtons())
-                .build());
+        buildReplyMessage(chatId,Button.getInitialButtons(),makeOutputString.processInfo(chatId));
     }
 
+    //create new message only with text
     private void buildMessage(Long chatId, String text) throws TelegramApiException {
         execute(SendMessage.builder()
                 .chatId(chatId.toString())
@@ -188,6 +185,7 @@ public class CurrencyGoItBot extends TelegramLongPollingBot {
                 .build());
     }
 
+    //create new message with text and buttons
     private void buildReplyMessage(Long chatId, ReplyKeyboard keyboard, String text) throws TelegramApiException {
         execute(SendMessage.builder()
                 .chatId(chatId.toString())
@@ -195,6 +193,8 @@ public class CurrencyGoItBot extends TelegramLongPollingBot {
                 .replyMarkup(keyboard)
                 .build());
     }
+
+    //refresh message on buttons
     private void editReplyMessage(Message message, InlineKeyboardMarkup keyboard) throws TelegramApiException {
         Long chatId = message.getChatId();
         execute(EditMessageReplyMarkup.builder()

@@ -3,12 +3,26 @@ package settings;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 
+import java.io.Externalizable;
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class NumberSimbolsAfterCommaSetting{
+public class NumberSimbolsAfterCommaSetting implements Externalizable {
+    @Override
+    public void writeExternal(ObjectOutput objectOutput) throws IOException {
+        objectOutput.writeObject(simbolsAfterCommaMap);
+    }
+
+    @Override
+    public void readExternal(ObjectInput objectInput) throws IOException, ClassNotFoundException {
+        simbolsAfterCommaMap = (Map<Long, NumberSimbolsAfterComma>) objectInput.readObject();
+    }
+
     public enum NumberSimbolsAfterComma {
         TWO("#0.00"),
         THREE("#0.000"),
@@ -26,7 +40,7 @@ public class NumberSimbolsAfterCommaSetting{
     }
 
 
-    private static final Map<Long,NumberSimbolsAfterComma> simbolsAfterCommaMap = new HashMap<>();
+    private static Map<Long,NumberSimbolsAfterComma> simbolsAfterCommaMap = new HashMap<>();
 
 
 

@@ -14,6 +14,7 @@ public class CurrencyGoItBot extends TelegramLongPollingBot  implements Serializ
     BankSetting bankSetting = new BankSetting();
     NumberSimbolsAfterCommaSetting digitsSetting = new NumberSimbolsAfterCommaSetting();
     CurrencySetting currencySetting = new CurrencySetting();
+    NotificationSetting notificationSetting = new NotificationSetting();
 
     protected CurrencyGoItBot(DefaultBotOptions options) {
         super(options);
@@ -25,13 +26,18 @@ public class CurrencyGoItBot extends TelegramLongPollingBot  implements Serializ
     }
 
     private void methodWrite() throws IOException {
-        ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream("Externals.out"));
+        ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream("Settings.out"));
         out.writeObject(bankSetting);
+        out.writeObject(digitsSetting);
+        out.writeObject(currencySetting);
+        out.writeObject(notificationSetting);
         out.close();
 
     }private void methodRead() throws IOException, ClassNotFoundException {
-        ObjectInputStream in = new ObjectInputStream(new FileInputStream("Externals.out"));
+        ObjectInputStream in = new ObjectInputStream(new FileInputStream("Settings.out"));
         bankSetting = (BankSetting) in.readObject();
+        digitsSetting = (NumberSimbolsAfterCommaSetting) in.readObject();
+        currencySetting = (CurrencySetting) in.readObject();
     }
 
     @Override

@@ -1,9 +1,23 @@
 package settings;
 
+import java.io.Externalizable;
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
 import java.util.HashMap;
 import java.util.Map;
 
-public class NotificationSetting {
+public class NotificationSetting implements Externalizable {
+
+    @Override
+    public void writeExternal(ObjectOutput objectOutput) throws IOException {
+        objectOutput.writeObject(notificationMap);
+    }
+
+    @Override
+    public void readExternal(ObjectInput objectInput) throws IOException, ClassNotFoundException {
+        notificationMap = (Map<Long, Notification>) objectInput.readObject();
+    }
 
     public enum Notification {
         NINE(9),
@@ -18,7 +32,7 @@ public class NotificationSetting {
         EIGHTEEN(18),
         OFF_NOTIFY(-1);
 
-        private int time;
+        private final int time;
 
         Notification(int time) {
             this.time = time;

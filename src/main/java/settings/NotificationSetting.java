@@ -10,7 +10,8 @@ import java.util.List;
 import java.util.Map;
 
 public class NotificationSetting {
-    enum Notification {
+
+    public enum Notification {
         NINE(9),
         TEN(10),
         ELEVEN(11),
@@ -21,7 +22,7 @@ public class NotificationSetting {
         SIXTEEN(16),
         SEVENTEEN(17),
         EIGHTEEN(18),
-        OFF(-1);
+        OFF_NOTIFY(-1);
 
         private int time;
 
@@ -34,14 +35,27 @@ public class NotificationSetting {
         }
     }
 
+<<<<<<< HEAD
     private static Map<Long,Notification> notificationMap = new HashMap<>();
+=======
+    private static Map<Long, Notification> notificationMap = new HashMap<>();
+>>>>>>> master
 
-    public void setNotification(long chatId,Notification notification){
-        notificationMap.put(chatId,notification);
+    public static Map<Long, Notification> getNotificationMap() {
+        return notificationMap;
     }
 
+<<<<<<< HEAD
     public static Notification getNotification(long chatId){
         return notificationMap.getOrDefault(chatId,Notification.OFF);
+=======
+    public static void setNotification(long chatId, Notification notification) {
+        notificationMap.put(chatId, notification);
+    }
+
+    public Notification getNotification(long chatId) {
+        return notificationMap.getOrDefault(chatId, Notification.OFF_NOTIFY);
+>>>>>>> master
     }
 
     String setButton9Name(Long chatId) {

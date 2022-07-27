@@ -5,6 +5,9 @@ import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageRe
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboard;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import settings.*;
 
@@ -53,14 +56,11 @@ public class CurrencyGoItBot extends TelegramLongPollingBot {
 
     private void handleCommand(Update update) throws TelegramApiException {
         Message message = update.getMessage();
+        Long chatId = message.getChatId();
         String textCommand = update.getMessage().getText();
         switch (textCommand) {
             case "/start":
-                execute(SendMessage.builder()
-                        .chatId(message.getChatId().toString())
-                        .text("Ласкаво просимо. Наш бот допоможе відслідковувати актуальні курси валют.")
-                        .replyMarkup(Button.getInitialButtons())
-                        .build());
+                buildReplyMessage(chatId,Button.getInitialButtons(),"Ласкаво просимо. Наш бот допоможе відслідковувати актуальні курси валют.");
                 break;
         }
     }
@@ -73,63 +73,30 @@ public class CurrencyGoItBot extends TelegramLongPollingBot {
             case "buttonGetInfo":
                 MakeOutputString makeOutputString = new MakeOutputString();
                 String output = makeOutputString.processInfo(chatId);
-                execute(SendMessage.builder()
-                        .chatId(chatId.toString())
-                        .text(output)
-                        .replyMarkup(Button.getInitialButtons())
-                        .build());
+                buildReplyMessage(chatId,Button.getInitialButtons(),output);
                 break;
             case "buttonSettings":
-                execute(SendMessage.builder()
-                        .chatId(chatId.toString())
-                        .text("Налаштування.")
-                        .replyMarkup(Button.getSettingsButtons())
-                        .build());
+                buildReplyMessage(chatId,Button.getSettingsButtons(),"Налаштування.");
                 break;
             case "buttonDigitsNumber":
-                execute(SendMessage.builder()
-                        .chatId(chatId.toString())
-                        .text("Виберіть кількість знаків після коми")
-                        .replyMarkup(NumberSimbolsAfterCommaSetting.getDigitsButtons(chatId))
-                        .build());
+                buildReplyMessage(chatId,NumberSimbolsAfterCommaSetting.getDigitsButtons(chatId),"Виберіть кількість знаків після коми");
                 break;
             case "buttonBank":
-                execute(SendMessage.builder()
-                        .chatId(chatId.toString())
-                        .text("Виберіть банк")
-                        .replyMarkup(BankSetting.getBankButtons(chatId))
-                        .build());
+                buildReplyMessage(chatId,BankSetting.getBankButtons(chatId),"Виберіть банк");
                 break;
             case "buttonCurrencies":
-                execute(SendMessage.builder()
-                        .chatId(chatId.toString())
-                        .text("Виберіть валюту")
-                        .replyMarkup(CurrencySetting.getCurrenciesButtons(chatId))
-                        .build());
+                buildReplyMessage(chatId,CurrencySetting.getCurrenciesButtons(chatId),"Виберіть валюту");
                 break;
             case "buttonNotificationTime":
-                execute(SendMessage.builder()
-                        .chatId(chatId.toString())
-                        .text("Виберіть час сповіщення")
-                        .replyMarkup(Button.getNotificationButtons())
-                        .build());
+                buildReplyMessage(chatId,Button.getNotificationButtons(),"Виберіть час сповіщення");
                 break;
 
             case "NBU":
             case "PRIVAT":
             case "MONO":
                 bankSetting.setSavedBank(chatId, BankSetting.Bank.valueOf(callbackQuery.getData()));
-
-                execute(EditMessageReplyMarkup.builder()
-                        .chatId(chatId)
-                        .messageId(message.getMessageId())
-                        .replyMarkup(BankSetting.getBankButtons(chatId))
-                        .build());
-                execute(SendMessage.builder()
-                        .chatId(message.getChatId().toString())
-                        .text("Банк обрано")
-                        .replyMarkup(Button.getReturnButton())
-                        .build());
+                editReplyMessage(message,BankSetting.getBankButtons(chatId));
+                buildReplyMessage(chatId,Button.getReturnButton(),"Банк обрано");
                 break;
 
             case "TWO":
@@ -137,123 +104,69 @@ public class CurrencyGoItBot extends TelegramLongPollingBot {
             case "FOUR":
                 digitsSetting.setSimbolsAfterComma(chatId, NumberSimbolsAfterCommaSetting.NumberSimbolsAfterComma
                         .valueOf(callbackQuery.getData()));
-
-                execute(EditMessageReplyMarkup.builder()
-                        .chatId(chatId)
-                        .messageId(message.getMessageId())
-                        .replyMarkup(NumberSimbolsAfterCommaSetting.getDigitsButtons(chatId))
-                        .build());
-                execute(SendMessage.builder()
-                        .chatId(message.getChatId().toString())
-                        .text("Кількість десяткових розрядів збережено")
-                        .replyMarkup(Button.getReturnButton())
-                        .build());
+                editReplyMessage(message,NumberSimbolsAfterCommaSetting.getDigitsButtons(chatId));
+                buildReplyMessage(chatId,Button.getReturnButton(),"Кількість десяткових розрядів збережено");
                 break;
 
             case "USD":
             case "EUR":
             case "GBP":
                 currencySetting.setSavedCurrency(chatId, CurrencySetting.Currency.valueOf(callbackQuery.getData()));
-
-                execute(EditMessageReplyMarkup.builder()
-                        .chatId(chatId)
-                        .messageId(message.getMessageId())
-                        .replyMarkup(CurrencySetting.getCurrenciesButtons(chatId))
-                        .build());
-                execute(SendMessage.builder()
-                        .chatId(message.getChatId().toString())
-                        .text("Валюту обрано")
-                        .replyMarkup(Button.getReturnButton())
-                        .build());
+                editReplyMessage(message,CurrencySetting.getCurrenciesButtons(chatId));
+                buildReplyMessage(chatId,Button.getReturnButton(),"Валюту обрано");
                 break;
         }
     }
 
     private void handleMessage(Message message) throws TelegramApiException {
         String text = message.getText();
+        Long chatId = message.getChatId();
         switch (text) {
             case "Повернутися":
-                execute(SendMessage.builder()
-                        .chatId(message.getChatId().toString())
-                        .text("Оберіть бажану функцію.")
-                        .replyMarkup(Button.getInitialButtons())
-                        .build());
+                buildReplyMessage(chatId,Button.getInitialButtons(),"Оберіть бажану функцію.");
                 break;
             case "9":
-                execute(SendMessage.builder()
-                        .chatId(message.getChatId().toString())
-                        .text("Надішлемо Вам сповіщення о 9 годині.")
-                        .build());
+                buildMessage(chatId,"Надішлемо Вам сповіщення о 9 годині.");
                 NotificationSetting.setNotification(message.getChatId(), NotificationSetting.Notification.NINE);
                 break;
             case "10":
-                execute(SendMessage.builder()
-                        .chatId(message.getChatId().toString())
-                        .text("Надішлемо Вам сповіщення о 10 годині.")
-                        .build());
+                buildMessage(chatId,"Надішлемо Вам сповіщення о 10 годині.");
                 NotificationSetting.setNotification(message.getChatId(), NotificationSetting.Notification.TEN);
                 break;
             case "11":
-                execute(SendMessage.builder()
-                        .chatId(message.getChatId().toString())
-                        .text("Надішлемо Вам сповіщення о 11 годині.")
-                        .build());
+                buildMessage(chatId,"Надішлемо Вам сповіщення о 11 годині.");
                 NotificationSetting.setNotification(message.getChatId(), NotificationSetting.Notification.ELEVEN);
                 break;
             case "12":
-                execute(SendMessage.builder()
-                        .chatId(message.getChatId().toString())
-                        .text("Надішлемо Вам сповіщення о 12 годині.")
-                        .build());
+                buildMessage(chatId,"Надішлемо Вам сповіщення о 12 годині.");
                 NotificationSetting.setNotification(message.getChatId(), NotificationSetting.Notification.TWELVE);
                 break;
             case "13":
-                execute(SendMessage.builder()
-                        .chatId(message.getChatId().toString())
-                        .text("Надішлемо Вам сповіщення о 13 годині.")
-                        .build());
+                buildMessage(chatId,"Надішлемо Вам сповіщення о 13 годині.");
                 NotificationSetting.setNotification(message.getChatId(), NotificationSetting.Notification.THIRTEEN);
                 break;
             case "14":
-                execute(SendMessage.builder()
-                        .chatId(message.getChatId().toString())
-                        .text("Надішлемо Вам сповіщення о 14 годині.")
-                        .build());
+                buildMessage(chatId,"Надішлемо Вам сповіщення о 14 годині.");
                 NotificationSetting.setNotification(message.getChatId(), NotificationSetting.Notification.FOURTEEN);
                 break;
             case "15":
-                execute(SendMessage.builder()
-                        .chatId(message.getChatId().toString())
-                        .text("Надішлемо Вам сповіщення о 15 годині.")
-                        .build());
+                buildMessage(chatId,"Надішлемо Вам сповіщення о 15 годині.");
                 NotificationSetting.setNotification(message.getChatId(), NotificationSetting.Notification.FIFTEEN);
                 break;
             case "16":
-                execute(SendMessage.builder()
-                        .chatId(message.getChatId().toString())
-                        .text("Надішлемо Вам сповіщення о 16 годині.")
-                        .build());
+                buildMessage(chatId,"Надішлемо Вам сповіщення о 16 годині.");
                 NotificationSetting.setNotification(message.getChatId(), NotificationSetting.Notification.SIXTEEN);
                 break;
             case "17":
-                execute(SendMessage.builder()
-                        .chatId(message.getChatId().toString())
-                        .text("Надішлемо Вам сповіщення о 17 годині.")
-                        .build());
+                buildMessage(chatId,"Надішлемо Вам сповіщення о 17 годині.");
                 NotificationSetting.setNotification(message.getChatId(), NotificationSetting.Notification.SEVENTEEN);
                 break;
             case "18":
-                execute(SendMessage.builder()
-                        .chatId(message.getChatId().toString())
-                        .text("Надішлемо Вам сповіщення о 18 годині.")
-                        .build());
+                buildMessage(chatId,"Надішлемо Вам сповіщення о 18годині.");
                 NotificationSetting.setNotification(message.getChatId(), NotificationSetting.Notification.EIGHTEEN);
                 break;
             case "Вимкнути сповіщення":
-                execute(SendMessage.builder()
-                        .chatId(message.getChatId().toString())
-                        .text("Ви вимкнули сповіщення.")
-                        .build());
+                buildMessage(chatId,"Ви вимкнули сповіщення.");
                 NotificationSetting.setNotification(message.getChatId(), NotificationSetting.Notification.OFF_NOTIFY);
                 break;
         }
@@ -265,6 +178,29 @@ public class CurrencyGoItBot extends TelegramLongPollingBot {
                 .chatId(String.valueOf(chatId))
                 .text(makeOutputString.processInfo(chatId))
                 .replyMarkup(Button.getInitialButtons())
+                .build());
+    }
+
+    private void buildMessage(Long chatId, String text) throws TelegramApiException {
+        execute(SendMessage.builder()
+                .chatId(chatId.toString())
+                .text(text)
+                .build());
+    }
+
+    private void buildReplyMessage(Long chatId, ReplyKeyboard keyboard, String text) throws TelegramApiException {
+        execute(SendMessage.builder()
+                .chatId(chatId.toString())
+                .text(text)
+                .replyMarkup(keyboard)
+                .build());
+    }
+    private void editReplyMessage(Message message, InlineKeyboardMarkup keyboard) throws TelegramApiException {
+        Long chatId = message.getChatId();
+        execute(EditMessageReplyMarkup.builder()
+                .chatId(chatId.toString())
+                .messageId(message.getMessageId())
+                .replyMarkup(keyboard)
                 .build());
     }
 }

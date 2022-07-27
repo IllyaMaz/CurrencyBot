@@ -69,7 +69,6 @@ public class CurrencyGoItBot extends TelegramLongPollingBot {
     }
 
     private void handleCallback(CallbackQuery callbackQuery)  throws TelegramApiException {
-        System.out.println();
         Message message = callbackQuery.getMessage();
         String data = callbackQuery.getData();
         Long chatId = message.getChatId();

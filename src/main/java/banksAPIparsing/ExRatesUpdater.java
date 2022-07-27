@@ -1,6 +1,7 @@
 package banksAPIparsing;
 
 import lombok.Data;
+import lombok.SneakyThrows;
 
 import java.io.IOException;
 
@@ -10,6 +11,7 @@ public class ExRatesUpdater implements Runnable{
     private long sleepMinutes = 3;
 
     @Override
+    @SneakyThrows
     public void run() {
         try {
             for(;;) {
@@ -18,7 +20,9 @@ public class ExRatesUpdater implements Runnable{
                 Thread.sleep(sleepMinutes * 60 * 1000);
             }
         } catch (InterruptedException | IOException e) {
-            throw new RuntimeException(e);
+            Thread.sleep(sleepMinutes * 60 * 1000);
+            new Thread(new ExRatesUpdater()).start();
+            e.printStackTrace();
         }
     }
 

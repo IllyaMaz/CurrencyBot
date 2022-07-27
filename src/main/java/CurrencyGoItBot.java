@@ -10,7 +10,7 @@ import settings.*;
 
 import java.io.*;
 
-public class CurrencyGoItBot extends TelegramLongPollingBot{
+public class CurrencyGoItBot extends TelegramLongPollingBot {
     protected static final BankSetting BANK_SETTING = new BankSetting();
     protected static final NumberSimbolsAfterCommaSetting DIGITS_SETTING = new NumberSimbolsAfterCommaSetting();
     protected static final CurrencySetting CURRENCY_SETTING = new CurrencySetting();
@@ -20,7 +20,6 @@ public class CurrencyGoItBot extends TelegramLongPollingBot{
         super(options);
         readSettings();
     }
-
 
 
     @Override
@@ -71,7 +70,7 @@ public class CurrencyGoItBot extends TelegramLongPollingBot{
         }
     }
 
-    private void handleCallback(CallbackQuery callbackQuery)  throws TelegramApiException {
+    private void handleCallback(CallbackQuery callbackQuery) throws TelegramApiException {
         Message message = callbackQuery.getMessage();
         String data = callbackQuery.getData();
         Long chatId = message.getChatId();
@@ -277,14 +276,15 @@ public class CurrencyGoItBot extends TelegramLongPollingBot{
                 .build());
     }
 
-    private static void readSettings(){
+    private static void readSettings() {
         try {
             Settings.loadFromFile(BANK_SETTING, DIGITS_SETTING, CURRENCY_SETTING, NOTIFICATION_SETTING);
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
     }
-    private static void writeSettings(){
+
+    private static void writeSettings() {
         try {
             Settings.writeToFile(BANK_SETTING, DIGITS_SETTING, CURRENCY_SETTING, NOTIFICATION_SETTING);
         } catch (IOException e) {

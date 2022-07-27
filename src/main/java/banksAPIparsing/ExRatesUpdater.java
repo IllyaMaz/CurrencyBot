@@ -3,8 +3,6 @@ package banksAPIparsing;
 import lombok.Data;
 import lombok.SneakyThrows;
 
-import java.io.IOException;
-
 @Data
 
 public class ExRatesUpdater implements Runnable {
@@ -17,7 +15,6 @@ public class ExRatesUpdater implements Runnable {
             System.out.println("Updating exchange rates..");
             HTTPclient.updateAllExchangeRates();
             Thread.sleep(sleepMinutes * 60 * 1000);
-
         }
     }
 }

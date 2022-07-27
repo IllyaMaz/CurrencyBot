@@ -10,35 +10,18 @@ import settings.*;
 
 import java.io.*;
 
-public class CurrencyGoItBot extends TelegramLongPollingBot  implements Serializable {
-    BankSetting bankSetting = new BankSetting();
-    NumberSimbolsAfterCommaSetting digitsSetting = new NumberSimbolsAfterCommaSetting();
-    CurrencySetting currencySetting = new CurrencySetting();
-    NotificationSetting notificationSetting = new NotificationSetting();
+public class CurrencyGoItBot extends TelegramLongPollingBot{
+    protected static final BankSetting BANK_SETTING = new BankSetting();
+    protected static final NumberSimbolsAfterCommaSetting DIGITS_SETTING = new NumberSimbolsAfterCommaSetting();
+    protected static final CurrencySetting CURRENCY_SETTING = new CurrencySetting();
+    protected static final NotificationSetting NOTIFICATION_SETTING = new NotificationSetting();
 
     protected CurrencyGoItBot(DefaultBotOptions options) {
         super(options);
-        try {
-            methodRead();
-        } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
-        }
+        readSettings();
     }
 
-    private void methodWrite() throws IOException {
-        ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream("Settings.out"));
-        out.writeObject(bankSetting);
-        out.writeObject(digitsSetting);
-        out.writeObject(currencySetting);
-        out.writeObject(notificationSetting);
-        out.close();
 
-    }private void methodRead() throws IOException, ClassNotFoundException {
-        ObjectInputStream in = new ObjectInputStream(new FileInputStream("Settings.out"));
-        bankSetting = (BankSetting) in.readObject();
-        digitsSetting = (NumberSimbolsAfterCommaSetting) in.readObject();
-        currencySetting = (CurrencySetting) in.readObject();
-    }
 
     @Override
     public String getBotUsername() {
@@ -101,11 +84,6 @@ public class CurrencyGoItBot extends TelegramLongPollingBot  implements Serializ
                         .text(output)
                         .replyMarkup(Button.getInitialButtons())
                         .build());
-                try {
-                    methodWrite();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
                 break;
             case "buttonSettings":
                 execute(SendMessage.builder()
@@ -146,7 +124,7 @@ public class CurrencyGoItBot extends TelegramLongPollingBot  implements Serializ
             case "NBU":
             case "PRIVAT":
             case "MONO":
-                bankSetting.setSavedBank(chatId, BankSetting.Bank.valueOf(callbackQuery.getData()));
+                BANK_SETTING.setSavedBank(chatId, BankSetting.Bank.valueOf(callbackQuery.getData()));
 
                 execute(EditMessageReplyMarkup.builder()
                         .chatId(chatId)
@@ -158,12 +136,13 @@ public class CurrencyGoItBot extends TelegramLongPollingBot  implements Serializ
                         .text("Банк обрано")
                         .replyMarkup(Button.getReturnButton())
                         .build());
+                writeSettings();
                 break;
 
             case "TWO":
             case "THREE":
             case "FOUR":
-                digitsSetting.setSimbolsAfterComma(chatId, NumberSimbolsAfterCommaSetting.NumberSimbolsAfterComma
+                DIGITS_SETTING.setSimbolsAfterComma(chatId, NumberSimbolsAfterCommaSetting.NumberSimbolsAfterComma
                         .valueOf(callbackQuery.getData()));
 
                 execute(EditMessageReplyMarkup.builder()
@@ -176,12 +155,13 @@ public class CurrencyGoItBot extends TelegramLongPollingBot  implements Serializ
                         .text("Кількість десяткових розрядів збережено")
                         .replyMarkup(Button.getReturnButton())
                         .build());
+                writeSettings();
                 break;
 
             case "USD":
             case "EUR":
             case "GBP":
-                currencySetting.setSavedCurrency(chatId, CurrencySetting.Currency.valueOf(callbackQuery.getData()));
+                CURRENCY_SETTING.setSavedCurrency(chatId, CurrencySetting.Currency.valueOf(callbackQuery.getData()));
 
                 execute(EditMessageReplyMarkup.builder()
                         .chatId(chatId)
@@ -193,6 +173,7 @@ public class CurrencyGoItBot extends TelegramLongPollingBot  implements Serializ
                         .text("Валюту обрано")
                         .replyMarkup(Button.getReturnButton())
                         .build());
+                writeSettings();
                 break;
         }
     }
@@ -294,5 +275,20 @@ public class CurrencyGoItBot extends TelegramLongPollingBot  implements Serializ
                 .text(makeOutputString.processInfo(chatId))
                 .replyMarkup(Button.getInitialButtons())
                 .build());
+    }
+
+    private static void readSettings(){
+        try {
+            Settings.loadFromFile(BANK_SETTING, DIGITS_SETTING, CURRENCY_SETTING, NOTIFICATION_SETTING);
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+    private static void writeSettings(){
+        try {
+            Settings.writeToFile(BANK_SETTING, DIGITS_SETTING, CURRENCY_SETTING, NOTIFICATION_SETTING);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

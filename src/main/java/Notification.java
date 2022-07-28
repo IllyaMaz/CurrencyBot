@@ -25,7 +25,7 @@ public class Notification implements Runnable {
     public void run() {
         while (true) {
             long delay = ChronoUnit.MILLIS.between(
-                    LocalTime.now(),LocalTime.now().getHour() == 23 ? LocalTime.MIDNIGHT :
+                    LocalTime.now(),LocalTime.now().getHour() == 23 ? LocalTime.MAX :
                     LocalTime.of(LocalTime.now().getHour() + 1, 0, 0));
 
             scheduler.schedule(() -> {

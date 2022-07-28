@@ -109,7 +109,7 @@ public class CurrencyGoItBot extends TelegramLongPollingBot {
                 execute(SendMessage.builder()
                         .chatId(chatId.toString())
                         .text("Виберіть час сповіщення")
-                        .replyMarkup(Button.getNotificationButtons())
+                        .replyMarkup(NotificationSetting.getNotificationButtons(chatId))
                         .build());
                 break;
 

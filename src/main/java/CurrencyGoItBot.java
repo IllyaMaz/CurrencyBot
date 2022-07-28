@@ -8,16 +8,12 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import settings.*;
 
-
-
 public class CurrencyGoItBot extends TelegramLongPollingBot {
-    BankSetting bankSetting = new BankSetting();
-    NumberSimbolsAfterCommaSetting digitsSetting = new NumberSimbolsAfterCommaSetting();
-    CurrencySetting currencySetting = new CurrencySetting();
-
-    protected CurrencyGoItBot(DefaultBotOptions options) {
+    public CurrencyGoItBot(DefaultBotOptions options) {
         super(options);
+        Settings.readSettings();
     }
+
 
     @Override
     public String getBotUsername() {
@@ -67,7 +63,7 @@ public class CurrencyGoItBot extends TelegramLongPollingBot {
         }
     }
 
-    private void handleCallback(CallbackQuery callbackQuery)  throws TelegramApiException {
+    private void handleCallback(CallbackQuery callbackQuery) throws TelegramApiException {
         Message message = callbackQuery.getMessage();
         String data = callbackQuery.getData();
         Long chatId = message.getChatId();
@@ -113,13 +109,14 @@ public class CurrencyGoItBot extends TelegramLongPollingBot {
                 execute(SendMessage.builder()
                         .chatId(chatId.toString())
                         .text("Виберіть час сповіщення")
-                        .replyMarkup(NotificationSetting.getNotificationButtons(chatId))                        .build());
+                        .replyMarkup(Button.getNotificationButtons())
+                        .build());
                 break;
 
             case "NBU":
             case "PRIVAT":
             case "MONO":
-                bankSetting.setSavedBank(chatId, BankSetting.Bank.valueOf(callbackQuery.getData()));
+                Settings.bankSetting.setSavedBank(chatId, BankSetting.Bank.valueOf(callbackQuery.getData()));
 
                 execute(EditMessageReplyMarkup.builder()
                         .chatId(chatId)
@@ -131,12 +128,13 @@ public class CurrencyGoItBot extends TelegramLongPollingBot {
                         .text("Банк обрано")
                         .replyMarkup(Button.getReturnButton())
                         .build());
+                Settings.writeSettings();
                 break;
 
             case "TWO":
             case "THREE":
             case "FOUR":
-                digitsSetting.setSimbolsAfterComma(chatId, NumberSimbolsAfterCommaSetting.NumberSimbolsAfterComma
+                Settings.digitsSetting.setSimbolsAfterComma(chatId, NumberSimbolsAfterCommaSetting.NumberSimbolsAfterComma
                         .valueOf(callbackQuery.getData()));
 
                 execute(EditMessageReplyMarkup.builder()
@@ -149,12 +147,13 @@ public class CurrencyGoItBot extends TelegramLongPollingBot {
                         .text("Кількість десяткових розрядів збережено")
                         .replyMarkup(Button.getReturnButton())
                         .build());
+                Settings.writeSettings();
                 break;
 
             case "USD":
             case "EUR":
             case "GBP":
-                currencySetting.setSavedCurrency(chatId, CurrencySetting.Currency.valueOf(callbackQuery.getData()));
+                Settings.currencySetting.setSavedCurrency(chatId, CurrencySetting.Currency.valueOf(callbackQuery.getData()));
 
                 execute(EditMessageReplyMarkup.builder()
                         .chatId(chatId)
@@ -166,6 +165,7 @@ public class CurrencyGoItBot extends TelegramLongPollingBot {
                         .text("Валюту обрано")
                         .replyMarkup(Button.getReturnButton())
                         .build());
+                Settings.writeSettings();
                 break;
         }
     }
@@ -176,14 +176,14 @@ public class CurrencyGoItBot extends TelegramLongPollingBot {
             case "Повернутися":
                 execute(SendMessage.builder()
                         .chatId(message.getChatId().toString())
-                        .text("Оберить бажану функцию")
-                        .replyMarkup(Button.getInitialButtons())
+                        .text("Оберіть бажану функцію.")
+                        .replyMarkup(Button.getSettingsButtons())
                         .build());
                 break;
             case "9":
                 execute(SendMessage.builder()
                         .chatId(message.getChatId().toString())
-                        .text("Оповещение прилетит в 9 утра.")
+                        .text("Надішлемо Вам сповіщення о 9 годині.")
                         .build());
                 NotificationSetting.setNotification(message.getChatId(), NotificationSetting.Notification.NINE);
                 break;

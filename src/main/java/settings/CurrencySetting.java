@@ -3,6 +3,10 @@ package settings;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 
+import java.io.Externalizable;
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -10,7 +14,17 @@ import java.util.Map;
 
 import static settings.CurrencySetting.Currency.USD;
 
-public class CurrencySetting {
+public class CurrencySetting implements Externalizable {
+    @Override
+    public void writeExternal(ObjectOutput objectOutput) throws IOException {
+        objectOutput.writeObject(savedCurrencies);
+    }
+
+    @Override
+    public void readExternal(ObjectInput objectInput) throws IOException, ClassNotFoundException {
+        savedCurrencies = (Map<Long, List<Currency>>) objectInput.readObject();
+    }
+
     public enum Currency {
         USD,
         EUR,
@@ -37,8 +51,7 @@ public class CurrencySetting {
 
     public static List<Currency> getSavedCurrencies(long chatId){
         if (savedCurrencies.containsKey(chatId)) {
-            List<Currency> savedList = savedCurrencies.get(chatId);
-            return savedList;
+            return savedCurrencies.get(chatId);
         } else {
             List<Currency> savedList = new ArrayList<>();
             savedList.add(USD);

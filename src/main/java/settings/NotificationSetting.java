@@ -1,15 +1,24 @@
 package settings;
 
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardButton;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
-
-import java.util.ArrayList;
+import java.io.Externalizable;
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class NotificationSetting {
+public class NotificationSetting implements Externalizable {
+
+    @Override
+    public void writeExternal(ObjectOutput objectOutput) throws IOException {
+        objectOutput.writeObject(notificationMap);
+    }
+
+    @Override
+    public void readExternal(ObjectInput objectInput) throws IOException, ClassNotFoundException {
+        notificationMap = (Map<Long, Notification>) objectInput.readObject();
+    }
 
     public enum Notification {
         NINE(9),
@@ -35,7 +44,7 @@ public class NotificationSetting {
         }
     }
 
-    private static Map<Long,Notification> notificationMap = new HashMap<>();
+    private static Map<Long, Notification> notificationMap = new HashMap<>();
 
     public static Map<Long, Notification> getNotificationMap() {
         return notificationMap;
@@ -45,8 +54,8 @@ public class NotificationSetting {
         notificationMap.put(chatId, notification);
     }
 
-    public static Notification getNotification(long chatId){
-        return notificationMap.getOrDefault(chatId,Notification.OFF_NOTIFY);
+    public Notification getNotification(long chatId) {
+        return notificationMap.getOrDefault(chatId, Notification.OFF_NOTIFY);
     }
 
     String setButton9Name(Long chatId) {

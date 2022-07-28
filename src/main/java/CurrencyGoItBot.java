@@ -6,9 +6,8 @@ import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
-import settings.BankSetting;
-import settings.CurrencySetting;
-import settings.NumberSimbolsAfterCommaSetting;
+import settings.*;
+
 
 
 public class CurrencyGoItBot extends TelegramLongPollingBot {
@@ -114,8 +113,7 @@ public class CurrencyGoItBot extends TelegramLongPollingBot {
                 execute(SendMessage.builder()
                         .chatId(chatId.toString())
                         .text("Виберіть час сповіщення")
-                        .replyMarkup(Button.getNotificationButtons())
-                        .build());
+                        .replyMarkup(NotificationSetting.getNotificationButtons(chatId))                        .build());
                 break;
 
             case "NBU":

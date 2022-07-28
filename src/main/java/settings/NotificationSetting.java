@@ -152,7 +152,7 @@ public class NotificationSetting {
         keyboardThirdRow.add(button17);
 
         KeyboardRow keyboardFourthRow = new KeyboardRow();
-        keyboardFourthRow.add(button9);
+        keyboardFourthRow.add(button18);
         keyboardFourthRow.add(buttonNoNotification);
 
         keyboard.add(keyboardFirstRow);

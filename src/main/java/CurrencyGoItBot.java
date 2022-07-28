@@ -264,6 +264,7 @@ public class CurrencyGoItBot extends TelegramLongPollingBot {
                 NotificationSetting.setNotification(message.getChatId(), NotificationSetting.Notification.OFF_NOTIFY);
                 break;
         }
+        if (!text.equals("Повернутися")) Settings.writeSettings();
     }
 
     public void sendNotification(long chatId) throws TelegramApiException {

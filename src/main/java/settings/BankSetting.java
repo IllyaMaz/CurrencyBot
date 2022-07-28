@@ -63,6 +63,7 @@ public class BankSetting implements Externalizable {
         buttonMono.setText(new BankSetting().setMonoButtonName(chatId));
         buttonMono.setCallbackData("MONO");
 
+
         List<InlineKeyboardButton> keyboardButtonsRow1 = new ArrayList<>();
         keyboardButtonsRow1.add(buttonNBU);
         List<InlineKeyboardButton> keyboardButtonsRow2 = new ArrayList<>();

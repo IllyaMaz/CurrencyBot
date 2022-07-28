@@ -167,6 +167,12 @@ public class CurrencyGoItBot extends TelegramLongPollingBot {
                         .build());
                 Settings.writeSettings();
                 break;
+            case "reset":
+                execute(SendMessage.builder()
+                        .chatId(chatId)
+                        .text("Оберіть пункт меню")
+                        .replyMarkup(Button.getInitialButtons())
+                        .build());
         }
     }
 

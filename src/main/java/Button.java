@@ -49,6 +49,9 @@ public class Button {
         InlineKeyboardButton buttonNotificationTime = new InlineKeyboardButton();
         buttonNotificationTime.setText("Час сповіщень");
         buttonNotificationTime.setCallbackData("buttonNotificationTime");
+        InlineKeyboardButton buttonReset = new InlineKeyboardButton();
+        buttonReset.setText("Назад");
+        buttonReset.setCallbackData("reset");
 
         List<InlineKeyboardButton> keyboardButtonsRow1 = new ArrayList<>();
         keyboardButtonsRow1.add(buttonDigitsNumber);
@@ -58,12 +61,15 @@ public class Button {
         keyboardButtonsRow3.add(buttonCurrencies);
         List<InlineKeyboardButton> keyboardButtonsRow4 = new ArrayList<>();
         keyboardButtonsRow4.add(buttonNotificationTime);
+        List<InlineKeyboardButton> keyboardButtonsRow5 = new ArrayList<>();
+        keyboardButtonsRow5.add(buttonReset);
 
         List<List<InlineKeyboardButton>> rowList = new ArrayList<>();
         rowList.add(keyboardButtonsRow1);
         rowList.add(keyboardButtonsRow2);
         rowList.add(keyboardButtonsRow3);
         rowList.add(keyboardButtonsRow4);
+        rowList.add(keyboardButtonsRow5);
         settingsMarkup.setKeyboard(rowList);
 
         return settingsMarkup;
@@ -80,22 +86,11 @@ public class Button {
         KeyboardRow keyboardFirstRow = new KeyboardRow();
         keyboardFirstRow.add(new KeyboardButton("Повернутися"));
 
-
-
         keyboard.add(keyboardFirstRow);
 
-
         notificationMarkup.setKeyboard(keyboard);
-
 
         return notificationMarkup;
     }
 
 }
-
-
-
-
-
-
-

@@ -25,18 +25,7 @@ public class Notification implements Runnable {
     @SneakyThrows
     public void run() {
         while (true) {
-            if (LocalTime.now().isBefore(LocalTime.of(9, 0))) {
-                delay = ChronoUnit.MILLIS.between(
-                        LocalTime.now(),
-                        LocalTime.of(9, 0));
-            } else if (LocalTime.now().isAfter(LocalTime.of(18, 0))) {
-                delay = ChronoUnit.MILLIS.between(LocalTime.now(), LocalTime.MAX) +
-                        ChronoUnit.MILLIS.between(LocalTime.MIDNIGHT, LocalTime.of(9,0));
-            } else {
-                delay = ChronoUnit.MILLIS.between(
-                        LocalTime.now(),
-                        LocalTime.of(LocalTime.now().getHour() + 1, 0, 0));
-            }
+            delay = getDelay();
 
             scheduler.schedule(() -> {
                 settings.entrySet().stream()
@@ -53,6 +42,21 @@ public class Notification implements Runnable {
 
             Thread.sleep(delay + 1000 * 60 * 5);
 
+        }
+    }
+
+    private long getDelay() {
+        if (LocalTime.now().isBefore(LocalTime.of(9, 0))) {
+            return ChronoUnit.MILLIS.between(
+                    LocalTime.now(),
+                    LocalTime.of(9, 0));
+        } else if (LocalTime.now().isAfter(LocalTime.of(18, 0))) {
+            return ChronoUnit.MILLIS.between(LocalTime.now(), LocalTime.MAX) +
+                    ChronoUnit.MILLIS.between(LocalTime.MIDNIGHT, LocalTime.of(9,0));
+        } else {
+            return ChronoUnit.MILLIS.between(
+                    LocalTime.now(),
+                    LocalTime.of(LocalTime.now().getHour() + 1, 0, 0));
         }
     }
 }

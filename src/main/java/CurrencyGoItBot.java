@@ -11,10 +11,10 @@ import settings.*;
 import java.io.*;
 
 public class CurrencyGoItBot extends TelegramLongPollingBot {
-    protected static final BankSetting BANK_SETTING = new BankSetting();
-    protected static final NumberSimbolsAfterCommaSetting DIGITS_SETTING = new NumberSimbolsAfterCommaSetting();
-    protected static final CurrencySetting CURRENCY_SETTING = new CurrencySetting();
-    protected static final NotificationSetting NOTIFICATION_SETTING = new NotificationSetting();
+    private static final BankSetting BANK_SETTING = new BankSetting();
+    private static final NumberSimbolsAfterCommaSetting DIGITS_SETTING = new NumberSimbolsAfterCommaSetting();
+    private static final CurrencySetting CURRENCY_SETTING = new CurrencySetting();
+    private static final NotificationSetting NOTIFICATION_SETTING = new NotificationSetting();
 
     protected CurrencyGoItBot(DefaultBotOptions options) {
         super(options);

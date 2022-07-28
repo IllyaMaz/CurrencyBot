@@ -32,7 +32,7 @@ public class NotificationSetting implements Externalizable {
         EIGHTEEN(18),
         OFF_NOTIFY(-1);
 
-        private final int time;
+        private int time;
 
         Notification(int time) {
             this.time = time;

@@ -8,10 +8,9 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import settings.*;
 
-import java.io.*;
 
 public class CurrencyGoItBot extends TelegramLongPollingBot {
-    protected CurrencyGoItBot(DefaultBotOptions options) {
+    public CurrencyGoItBot(DefaultBotOptions options) {
         super(options);
         Settings.readSettings();
     }
@@ -179,7 +178,7 @@ public class CurrencyGoItBot extends TelegramLongPollingBot {
                 execute(SendMessage.builder()
                         .chatId(message.getChatId().toString())
                         .text("Оберіть бажану функцію.")
-                        .replyMarkup(Button.getInitialButtons())
+                        .replyMarkup(Button.getSettingsButtons())
                         .build());
                 break;
             case "9":

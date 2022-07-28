@@ -10,9 +10,10 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 public class Notification implements Runnable {
-    ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
-    CurrencyGoItBot bot;
-    Map<Long, NotificationSetting.Notification> settings;
+    private ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+    private CurrencyGoItBot bot;
+    private Map<Long, NotificationSetting.Notification> settings;
+    private long delay;
 
     public Notification(Map<Long, NotificationSetting.Notification> settings, CurrencyGoItBot bot) {
         System.out.println("Start notification thread...");
@@ -24,14 +25,16 @@ public class Notification implements Runnable {
     @SneakyThrows
     public void run() {
         while (true) {
-            long delay = 0;
             if (LocalTime.now().isBefore(LocalTime.of(9, 0))) {
                 delay = ChronoUnit.MILLIS.between(
                         LocalTime.now(),
                         LocalTime.of(9, 0));
+            } else if (LocalTime.now().isAfter(LocalTime.of(18, 0))) {
+                delay = ChronoUnit.MILLIS.between(LocalTime.now(), LocalTime.MAX) +
+                        ChronoUnit.MILLIS.between(LocalTime.MIDNIGHT, LocalTime.of(9,0));
             } else {
                 delay = ChronoUnit.MILLIS.between(
-                        LocalTime.now(), LocalTime.now().getHour() == 23 ? LocalTime.MAX :
+                        LocalTime.now(),
                         LocalTime.of(LocalTime.now().getHour() + 1, 0, 0));
             }
 
@@ -48,7 +51,7 @@ public class Notification implements Runnable {
                         });
             }, delay, TimeUnit.MILLISECONDS);
 
-            Thread.sleep(1000 * 60 * 60);
+            Thread.sleep(delay + 1000 * 60 * 5);
 
         }
     }

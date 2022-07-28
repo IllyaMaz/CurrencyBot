@@ -1,29 +1,38 @@
 package settings;
 
 import java.io.*;
-import java.net.URL;
 
 public class Settings {
     private static final File FILE = new File("./src/main/resources/Settings.cfg");
+    public static BankSetting bankSetting = new BankSetting();
+    public static NumberSimbolsAfterCommaSetting digitsSetting = new NumberSimbolsAfterCommaSetting();
+    public static CurrencySetting currencySetting = new CurrencySetting();
+    public static NotificationSetting notificationSetting = new NotificationSetting();
 
-    /*Записывать и читать файл только в одной последовательности
-     * иначе получаем RuntimeException.
-     * пример правильного вызова:
-     * writeSettingsFile(object1,object2,object3)
-     * readSettingsFile(object1,object2,object3)
-     */
-    public static void writeToFile(Object... objects) throws IOException {
-        ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(FILE));
-        for (Object object : objects) {
-            out.writeObject(object);
+    public static void writeSettings() {
+        ObjectOutputStream out;
+        try {
+            out = new ObjectOutputStream(new FileOutputStream(FILE));
+            out.writeObject(bankSetting);
+            out.writeObject(digitsSetting);
+            out.writeObject(currencySetting);
+            out.writeObject(notificationSetting);
+            out.close();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        out.close();
     }
 
-    public static void loadFromFile(Object... objects) throws IOException, ClassNotFoundException {
-        ObjectInputStream in = new ObjectInputStream(new FileInputStream(FILE));
-        for (int i = 0; i < objects.length; i++) {
-            objects[i] = in.readObject();
+    public static void readSettings() {
+        ObjectInputStream in;
+        try {
+            in = new ObjectInputStream(new FileInputStream(FILE));
+            bankSetting = (BankSetting) in.readObject();
+            digitsSetting = (NumberSimbolsAfterCommaSetting) in.readObject();
+            currencySetting = (CurrencySetting) in.readObject();
+            notificationSetting = (NotificationSetting) in.readObject();
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
         }
     }
 }

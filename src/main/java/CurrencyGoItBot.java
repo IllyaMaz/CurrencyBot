@@ -11,14 +11,9 @@ import settings.*;
 import java.io.*;
 
 public class CurrencyGoItBot extends TelegramLongPollingBot {
-    private static final BankSetting BANK_SETTING = new BankSetting();
-    private static final NumberSimbolsAfterCommaSetting DIGITS_SETTING = new NumberSimbolsAfterCommaSetting();
-    private static final CurrencySetting CURRENCY_SETTING = new CurrencySetting();
-    private static final NotificationSetting NOTIFICATION_SETTING = new NotificationSetting();
-
     protected CurrencyGoItBot(DefaultBotOptions options) {
         super(options);
-        readSettings();
+        Settings.readSettings();
     }
 
 
@@ -123,7 +118,7 @@ public class CurrencyGoItBot extends TelegramLongPollingBot {
             case "NBU":
             case "PRIVAT":
             case "MONO":
-                BANK_SETTING.setSavedBank(chatId, BankSetting.Bank.valueOf(callbackQuery.getData()));
+                Settings.bankSetting.setSavedBank(chatId, BankSetting.Bank.valueOf(callbackQuery.getData()));
 
                 execute(EditMessageReplyMarkup.builder()
                         .chatId(chatId)
@@ -135,13 +130,13 @@ public class CurrencyGoItBot extends TelegramLongPollingBot {
                         .text("Банк обрано")
                         .replyMarkup(Button.getReturnButton())
                         .build());
-                writeSettings();
+                Settings.writeSettings();
                 break;
 
             case "TWO":
             case "THREE":
             case "FOUR":
-                DIGITS_SETTING.setSimbolsAfterComma(chatId, NumberSimbolsAfterCommaSetting.NumberSimbolsAfterComma
+                Settings.digitsSetting.setSimbolsAfterComma(chatId, NumberSimbolsAfterCommaSetting.NumberSimbolsAfterComma
                         .valueOf(callbackQuery.getData()));
 
                 execute(EditMessageReplyMarkup.builder()
@@ -154,13 +149,13 @@ public class CurrencyGoItBot extends TelegramLongPollingBot {
                         .text("Кількість десяткових розрядів збережено")
                         .replyMarkup(Button.getReturnButton())
                         .build());
-                writeSettings();
+                Settings.writeSettings();
                 break;
 
             case "USD":
             case "EUR":
             case "GBP":
-                CURRENCY_SETTING.setSavedCurrency(chatId, CurrencySetting.Currency.valueOf(callbackQuery.getData()));
+                Settings.currencySetting.setSavedCurrency(chatId, CurrencySetting.Currency.valueOf(callbackQuery.getData()));
 
                 execute(EditMessageReplyMarkup.builder()
                         .chatId(chatId)
@@ -172,7 +167,7 @@ public class CurrencyGoItBot extends TelegramLongPollingBot {
                         .text("Валюту обрано")
                         .replyMarkup(Button.getReturnButton())
                         .build());
-                writeSettings();
+                Settings.writeSettings();
                 break;
         }
     }
@@ -274,21 +269,5 @@ public class CurrencyGoItBot extends TelegramLongPollingBot {
                 .text(makeOutputString.processInfo(chatId))
                 .replyMarkup(Button.getInitialButtons())
                 .build());
-    }
-
-    private static void readSettings() {
-        try {
-            Settings.loadFromFile(BANK_SETTING, DIGITS_SETTING, CURRENCY_SETTING, NOTIFICATION_SETTING);
-        } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private static void writeSettings() {
-        try {
-            Settings.writeToFile(BANK_SETTING, DIGITS_SETTING, CURRENCY_SETTING, NOTIFICATION_SETTING);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 }
